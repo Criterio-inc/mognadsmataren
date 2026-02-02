@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Plus, Users, Calendar, Link as LinkIcon, MoreVertical, Trash2 } from 'lucide-react';
+import { Plus, Users, Calendar, Link as LinkIcon, MoreVertical, Trash2, Sparkles } from 'lucide-react';
 import { formatDate, isDeadlinePassed } from '@/lib/utils';
 
 interface Project {
@@ -22,6 +22,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showNewProject, setShowNewProject] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [isCreatingDemo, setIsCreatingDemo] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -34,6 +35,24 @@ export default function DashboardPage() {
       setProjects(data);
     }
     setIsLoading(false);
+  }
+
+  async function createDemoProject() {
+    setIsCreatingDemo(true);
+    try {
+      const res = await fetch('/api/seed-demo', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        alert(`Demo-projekt skapat! Gå till rapporten: ${data.reportUrl}`);
+        fetchProjects();
+      } else {
+        alert('Kunde inte skapa demo-projekt');
+      }
+    } catch {
+      alert('Fel vid skapande av demo-projekt');
+    } finally {
+      setIsCreatingDemo(false);
+    }
   }
 
   async function handleDelete(id: string) {
@@ -85,13 +104,23 @@ export default function DashboardPage() {
             Hantera dina kundprojekt och se resultat
           </p>
         </div>
-        <Link
-          href="/dashboard/new"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Nytt projekt
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={createDemoProject}
+            disabled={isCreatingDemo}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors disabled:opacity-50"
+          >
+            <Sparkles className="w-4 h-4" />
+            {isCreatingDemo ? 'Skapar...' : 'Demo-projekt'}
+          </button>
+          <Link
+            href="/dashboard/new"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            Nytt projekt
+          </Link>
+        </div>
       </div>
 
       {/* Projects grid */}
