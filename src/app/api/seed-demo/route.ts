@@ -133,7 +133,7 @@ export async function POST() {
       await db.insert(assessmentResults).values({
         sessionId: assessmentSession.id,
         dimensionScores,
-        overallScore: Math.round(overallScore * 100) / 100,
+        overallScore: Math.round(overallScore),
         maturityLevel,
       });
 
