@@ -41,15 +41,15 @@ export default function DashboardPage() {
     setIsCreatingDemo(true);
     try {
       const res = await fetch('/api/seed-demo', { method: 'POST' });
+      const data = await res.json();
       if (res.ok) {
-        const data = await res.json();
         alert(`Demo-projekt skapat! Gå till rapporten: ${data.reportUrl}`);
         fetchProjects();
       } else {
-        alert('Kunde inte skapa demo-projekt');
+        alert(`Kunde inte skapa demo-projekt: ${data.details || data.error}`);
       }
-    } catch {
-      alert('Fel vid skapande av demo-projekt');
+    } catch (err) {
+      alert(`Fel vid skapande av demo-projekt: ${err}`);
     } finally {
       setIsCreatingDemo(false);
     }

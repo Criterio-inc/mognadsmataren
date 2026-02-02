@@ -84,7 +84,7 @@ export async function POST() {
       const name = SWEDISH_NAMES[i];
       const email = `${name.toLowerCase().replace(' ', '.')}@demo.se`;
 
-      const [session] = await db.insert(assessmentSessions).values({
+      const [assessmentSession] = await db.insert(assessmentSessions).values({
         projectId: project.id,
         respondentEmail: email,
         respondentName: name,
@@ -102,7 +102,7 @@ export async function POST() {
       for (let q = 1; q <= 22; q++) {
         const value = generateRealisticScore();
         allResponses.push({
-          sessionId: session.id,
+          sessionId: assessmentSession.id,
           questionId: q,
           value,
         });
@@ -131,7 +131,7 @@ export async function POST() {
       const maturityLevel = Math.round(overallScore);
 
       await db.insert(assessmentResults).values({
-        sessionId: session.id,
+        sessionId: assessmentSession.id,
         dimensionScores,
         overallScore: Math.round(overallScore * 100) / 100,
         maturityLevel,
@@ -153,8 +153,9 @@ export async function POST() {
     });
   } catch (error) {
     console.error('Error seeding demo project:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'Failed to create demo project' },
+      { error: 'Failed to create demo project', details: errorMessage },
       { status: 500 }
     );
   }
