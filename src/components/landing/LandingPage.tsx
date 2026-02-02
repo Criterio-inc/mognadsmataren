@@ -60,16 +60,16 @@ export function LandingPage({ onStart }: LandingPageProps) {
       <div className="max-w-6xl mx-auto px-4 pt-8 pb-24">
         {/* Curago Logo */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-center mb-12"
         >
           <Image
             src="/curago-logo.png"
             alt="Curago"
-            width={180}
-            height={60}
-            className="h-12 w-auto"
+            width={240}
+            height={80}
+            className="h-16 md:h-20 w-auto"
             priority
           />
         </motion.div>
@@ -87,7 +87,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
               ? 'Mät er ledningsgrupps digitala mognad'
               : 'Measure your leadership team\'s digital maturity'}
           </p>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto italic">
             {locale === 'sv'
               ? '"En digital strategi blir bara så bra som den förankring den får i ledningen"'
               : '"A digital strategy is only as good as the buy-in it gets from leadership"'}
@@ -118,8 +118,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-xl p-6 shadow-lg"
+                whileHover={{
+                  scale: 1.05,
+                  y: -5,
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
+                }}
+                transition={{ delay: 0.3 + index * 0.1, type: "spring", stiffness: 300 }}
+                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-xl p-6 shadow-lg cursor-pointer"
               >
                 <Icon className="w-10 h-10 text-blue-600 mb-4" />
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
@@ -149,8 +154,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 key={index}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                className="flex items-start gap-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur rounded-xl p-6"
+                whileHover={{
+                  scale: 1.02,
+                  x: index % 2 === 0 ? 5 : -5,
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+                }}
+                transition={{ delay: 0.6 + index * 0.1, type: "spring", stiffness: 300 }}
+                className="flex items-start gap-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur rounded-xl p-6 cursor-pointer"
               >
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
                   {index + 1}
@@ -165,6 +175,35 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </motion.div>
+
+        {/* Why digital maturity assessment */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="mb-24 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8"
+        >
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-6">
+            {locale === 'sv' ? 'Varför mäta digital mognad?' : 'Why measure digital maturity?'}
+          </h2>
+          <div className="max-w-4xl mx-auto space-y-4 text-gray-600 dark:text-gray-300">
+            <p>
+              {locale === 'sv'
+                ? 'En digital mognadsmätning skapar ett gemensamt och verifierbart nuläge för ledning och verksamhet. Den flyttar dialogen från upplevda behov och lösryckta initiativ till en sammanhängande förståelse för hur styrning, förmågor, arbetssätt och teknik faktiskt hänger ihop.'
+                : 'A digital maturity assessment creates a shared and verifiable baseline for leadership and operations. It shifts the dialogue from perceived needs and disconnected initiatives to a coherent understanding of how governance, capabilities, ways of working and technology actually connect.'}
+            </p>
+            <p>
+              {locale === 'sv'
+                ? 'När nuläget är tydligt blir det möjligt att formulera en digital ambition som är både relevant och realistisk – och att skilja mellan vad som är strategiskt viktigt och vad som bara är angeläget.'
+                : 'When the current state is clear, it becomes possible to formulate a digital ambition that is both relevant and realistic – and to distinguish between what is strategically important and what is merely urgent.'}
+            </p>
+            <p className="font-medium text-gray-700 dark:text-gray-200">
+              {locale === 'sv'
+                ? 'Resultatet är en digital förflyttning som bygger på genomförbarhet, tydligt ansvar och ett tempo som organisationen faktiskt klarar att hålla över tid – i linje med Curagos 5-stegsmodell för digital förflyttning.'
+                : 'The result is a digital transformation built on feasibility, clear accountability and a pace the organization can actually sustain over time – in line with Curago\'s 5-step model for digital transformation.'}
+            </p>
           </div>
         </motion.div>
 
