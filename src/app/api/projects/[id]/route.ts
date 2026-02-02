@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { db } from '@/db';
-import { projects, assessmentSessions, responses, assessmentResults } from '@/db/schema';
+import { projects, assessmentSessions, assessmentResults } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 
 type Params = Promise<{ id: string }>;
@@ -9,9 +9,12 @@ type Params = Promise<{ id: string }>;
 // GET /api/projects/[id] - Get project details with responses
 export async function GET(req: NextRequest, { params }: { params: Params }) {
   const { id } = await params;
-  const session = await auth();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -19,7 +22,7 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
   const [project] = await db
     .select()
     .from(projects)
-    .where(and(eq(projects.id, id), eq(projects.createdById, session.user.id)));
+    .where(and(eq(projects.id, id), eq(projects.createdById, user.id)));
 
   if (!project) {
     return NextResponse.json({ error: 'Project not found' }, { status: 404 });
@@ -84,9 +87,12 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
 // PATCH /api/projects/[id] - Update project
 export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   const { id } = await params;
-  const session = await auth();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -94,7 +100,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   const [existing] = await db
     .select()
     .from(projects)
-    .where(and(eq(projects.id, id), eq(projects.createdById, session.user.id)));
+    .where(and(eq(projects.id, id), eq(projects.createdById, user.id)));
 
   if (!existing) {
     return NextResponse.json({ error: 'Project not found' }, { status: 404 });
@@ -122,9 +128,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
 // DELETE /api/projects/[id] - Delete project
 export async function DELETE(req: NextRequest, { params }: { params: Params }) {
   const { id } = await params;
-  const session = await auth();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -132,7 +141,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Params }) {
   const [existing] = await db
     .select()
     .from(projects)
-    .where(and(eq(projects.id, id), eq(projects.createdById, session.user.id)));
+    .where(and(eq(projects.id, id), eq(projects.createdById, user.id)));
 
   if (!existing) {
     return NextResponse.json({ error: 'Project not found' }, { status: 404 });

@@ -1,4 +1,4 @@
-import { auth } from '@/auth';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,9 +9,12 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user) {
+  if (!user) {
     redirect('/login');
   }
 
@@ -44,19 +47,12 @@ export default async function DashboardLayout({
             <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-slate-900 dark:text-white">
-                  {session.user.name}
+                  {user.email?.split('@')[0]}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {session.user.email}
+                  {user.email}
                 </p>
               </div>
-              {session.user.image && (
-                <img
-                  src={session.user.image}
-                  alt=""
-                  className="w-8 h-8 rounded-full"
-                />
-              )}
               <SignOutButton />
             </div>
           </div>

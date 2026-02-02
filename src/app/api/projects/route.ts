@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { db } from '@/db';
 import { projects, assessmentSessions } from '@/db/schema';
 import { eq, desc, count } from 'drizzle-orm';
@@ -7,9 +7,12 @@ import { generateShareCode } from '@/lib/utils';
 
 // GET /api/projects - List all projects for the logged-in consultant
 export async function GET() {
-  const session = await auth();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -27,7 +30,7 @@ export async function GET() {
     })
     .from(projects)
     .leftJoin(assessmentSessions, eq(projects.id, assessmentSessions.projectId))
-    .where(eq(projects.createdById, session.user.id))
+    .where(eq(projects.createdById, user.id))
     .groupBy(projects.id)
     .orderBy(desc(projects.createdAt));
 
@@ -36,9 +39,12 @@ export async function GET() {
 
 // POST /api/projects - Create a new project
 export async function POST(req: NextRequest) {
-  const session = await auth();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -64,7 +70,7 @@ export async function POST(req: NextRequest) {
       clientName,
       clientDomain: cleanDomain,
       shareCode,
-      createdById: session.user.id,
+      createdById: user.id,
       deadline: deadline ? new Date(deadline) : null,
       status: status || 'active',
     })
