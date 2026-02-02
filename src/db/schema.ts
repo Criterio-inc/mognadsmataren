@@ -1,44 +1,72 @@
-import { pgTable, text, timestamp, integer, uuid, jsonb, boolean, pgEnum } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, integer, uuid, jsonb, pgEnum } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // Enums
-export const roleEnum = pgEnum('role', ['owner', 'admin', 'member']);
 export const localeEnum = pgEnum('locale', ['sv', 'en']);
+export const userRoleEnum = pgEnum('user_role', ['curago_admin', 'respondent']);
+export const projectStatusEnum = pgEnum('project_status', ['draft', 'active', 'closed']);
 
-// Organizations (Teams)
-export const organizations = pgTable('organizations', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  name: text('name').notNull(),
-  slug: text('slug').notNull().unique(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
-
-// Users
+// Users (Curago consultants who log in with Google)
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
   email: text('email').notNull().unique(),
+  emailVerified: timestamp('email_verified', { mode: 'date' }),
   name: text('name'),
   image: text('image'),
+  role: userRoleEnum('role').default('curago_admin').notNull(),
   locale: localeEnum('locale').default('sv'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-// Organization Members (join table)
-export const organizationMembers = pgTable('organization_members', {
+// NextAuth.js required tables
+export const accounts = pgTable('accounts', {
   id: uuid('id').defaultRandom().primaryKey(),
-  organizationId: uuid('organization_id').notNull().references(() => organizations.id, { onDelete: 'cascade' }),
   userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  role: roleEnum('role').default('member').notNull(),
-  joinedAt: timestamp('joined_at').defaultNow().notNull(),
+  type: text('type').notNull(),
+  provider: text('provider').notNull(),
+  providerAccountId: text('provider_account_id').notNull(),
+  refresh_token: text('refresh_token'),
+  access_token: text('access_token'),
+  expires_at: integer('expires_at'),
+  token_type: text('token_type'),
+  scope: text('scope'),
+  id_token: text('id_token'),
+  session_state: text('session_state'),
 });
 
-// Assessment Sessions
+export const sessions = pgTable('sessions', {
+  sessionToken: text('session_token').primaryKey(),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  expires: timestamp('expires', { mode: 'date' }).notNull(),
+});
+
+export const verificationTokens = pgTable('verification_tokens', {
+  identifier: text('identifier').notNull(),
+  token: text('token').notNull().unique(),
+  expires: timestamp('expires').notNull(),
+});
+
+// Projects (created by Curago consultants for clients)
+export const projects = pgTable('projects', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(), // "Volvo Ledningsgrupp Q1 2025"
+  clientName: text('client_name').notNull(), // "Volvo"
+  clientDomain: text('client_domain').notNull(), // "volvo.se" - for email validation
+  shareCode: text('share_code').notNull().unique(), // Short unique code for URL
+  createdById: uuid('created_by_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  status: projectStatusEnum('status').default('draft').notNull(),
+  deadline: timestamp('deadline'), // When the survey closes
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Assessment Sessions (one per respondent per project)
 export const assessmentSessions = pgTable('assessment_sessions', {
   id: uuid('id').defaultRandom().primaryKey(),
-  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  organizationId: uuid('organization_id').references(() => organizations.id, { onDelete: 'cascade' }),
+  projectId: uuid('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+  respondentEmail: text('respondent_email').notNull(),
+  respondentName: text('respondent_name'),
   completedAt: timestamp('completed_at'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
@@ -82,35 +110,38 @@ export const assessmentResults = pgTable('assessment_results', {
 });
 
 // Relations
-export const organizationsRelations = relations(organizations, ({ many }) => ({
-  members: many(organizationMembers),
-  sessions: many(assessmentSessions),
-}));
-
 export const usersRelations = relations(users, ({ many }) => ({
-  memberships: many(organizationMembers),
-  sessions: many(assessmentSessions),
+  projects: many(projects),
+  accounts: many(accounts),
+  sessions: many(sessions),
 }));
 
-export const organizationMembersRelations = relations(organizationMembers, ({ one }) => ({
-  organization: one(organizations, {
-    fields: [organizationMembers.organizationId],
-    references: [organizations.id],
-  }),
+export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, {
-    fields: [organizationMembers.userId],
+    fields: [accounts.userId],
     references: [users.id],
   }),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
+}));
+
+export const projectsRelations = relations(projects, ({ one, many }) => ({
+  createdBy: one(users, {
+    fields: [projects.createdById],
+    references: [users.id],
+  }),
+  assessmentSessions: many(assessmentSessions),
 }));
 
 export const assessmentSessionsRelations = relations(assessmentSessions, ({ one, many }) => ({
-  user: one(users, {
-    fields: [assessmentSessions.userId],
-    references: [users.id],
-  }),
-  organization: one(organizations, {
-    fields: [assessmentSessions.organizationId],
-    references: [organizations.id],
+  project: one(projects, {
+    fields: [assessmentSessions.projectId],
+    references: [projects.id],
   }),
   responses: many(responses),
   result: one(assessmentResults),
