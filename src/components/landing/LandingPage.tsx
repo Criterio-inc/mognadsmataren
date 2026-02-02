@@ -55,7 +55,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Hero section */}
       <div className="max-w-6xl mx-auto px-4 pt-8 pb-24">
         {/* Curago Logo */}
@@ -79,15 +79,15 @@ export function LandingPage({ onStart }: LandingPageProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             {locale === 'sv' ? 'Mognadsmätaren' : 'Maturity Meter'}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-3xl mx-auto">
             {locale === 'sv'
               ? 'Mät er ledningsgrupps digitala mognad'
               : 'Measure your leadership team\'s digital maturity'}
           </p>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto italic">
+          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto italic">
             {locale === 'sv'
               ? '"En digital strategi blir bara så bra som den förankring den får i ledningen"'
               : '"A digital strategy is only as good as the buy-in it gets from leadership"'}
@@ -97,7 +97,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
             onClick={onStart}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
           >
             {locale === 'sv' ? 'Starta bedömningen' : 'Start assessment'}
             <ArrowRight className="w-5 h-5" />
@@ -124,13 +124,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
                   boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
                 }}
                 transition={{ delay: 0.3 + index * 0.1, type: "spring", stiffness: 300 }}
-                className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-xl p-6 shadow-lg cursor-pointer"
+                className="bg-card backdrop-blur rounded-xl p-6 shadow-lg cursor-pointer border border-border"
               >
-                <Icon className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                <Icon className="w-10 h-10 text-primary mb-4" />
+                <h3 className="font-semibold text-card-foreground mb-1">
                   {feature[locale].title}
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {feature[locale].description}
                 </p>
               </motion.div>
@@ -145,7 +145,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           transition={{ delay: 0.5 }}
           className="mb-24"
         >
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+          <h2 className="text-2xl font-bold text-foreground text-center mb-8">
             {locale === 'sv' ? 'Fyra dimensioner av digital mognad' : 'Four dimensions of digital maturity'}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -160,16 +160,16 @@ export function LandingPage({ onStart }: LandingPageProps) {
                   boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
                 }}
                 transition={{ delay: 0.6 + index * 0.1, type: "spring", stiffness: 300 }}
-                className="flex items-start gap-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur rounded-xl p-6 cursor-pointer"
+                className="flex items-start gap-4 bg-card/80 backdrop-blur rounded-xl p-6 cursor-pointer border border-border"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
                   {index + 1}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                  <h3 className="font-semibold text-card-foreground mb-1">
                     {dim[locale].name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {dim[locale].description}
                   </p>
                 </div>
@@ -183,12 +183,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="mb-24 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8"
+          className="mb-24 bg-accent/30 dark:bg-accent/10 rounded-2xl p-8"
         >
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-6">
+          <h2 className="text-2xl font-bold text-foreground text-center mb-6">
             {locale === 'sv' ? 'Varför mäta digital mognad?' : 'Why measure digital maturity?'}
           </h2>
-          <div className="max-w-4xl mx-auto space-y-4 text-gray-600 dark:text-gray-300">
+          <div className="max-w-4xl mx-auto space-y-4 text-muted-foreground">
             <p>
               {locale === 'sv'
                 ? 'En digital mognadsmätning skapar ett gemensamt och verifierbart nuläge för ledning och verksamhet. Den flyttar dialogen från upplevda behov och lösryckta initiativ till en sammanhängande förståelse för hur styrning, förmågor, arbetssätt och teknik faktiskt hänger ihop.'
@@ -199,7 +199,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 ? 'När nuläget är tydligt blir det möjligt att formulera en digital ambition som är både relevant och realistisk – och att skilja mellan vad som är strategiskt viktigt och vad som bara är angeläget.'
                 : 'When the current state is clear, it becomes possible to formulate a digital ambition that is both relevant and realistic – and to distinguish between what is strategically important and what is merely urgent.'}
             </p>
-            <p className="font-medium text-gray-700 dark:text-gray-200">
+            <p className="font-medium text-foreground">
               {locale === 'sv'
                 ? 'Resultatet är en digital förflyttning som bygger på genomförbarhet, tydligt ansvar och ett tempo som organisationen faktiskt klarar att hålla över tid – i linje med Curagos 5-stegsmodell för digital förflyttning.'
                 : 'The result is a digital transformation built on feasibility, clear accountability and a pace the organization can actually sustain over time – in line with Curago\'s 5-step model for digital transformation.'}
@@ -212,9 +212,9 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl p-8 shadow-xl"
+          className="bg-card backdrop-blur rounded-2xl p-8 shadow-xl border border-border"
         >
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+          <h2 className="text-2xl font-bold text-card-foreground text-center mb-8">
             {locale === 'sv' ? 'Så här fungerar det' : 'How it works'}
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -236,15 +236,15 @@ export function LandingPage({ onStart }: LandingPageProps) {
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
+                  <span className="text-xl font-bold text-primary">
                     {item.step}
                   </span>
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="font-semibold text-card-foreground mb-2">
                   {item[locale].title}
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {item[locale].description}
                 </p>
               </div>
@@ -261,7 +261,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
         >
           <button
             onClick={onStart}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
           >
             {locale === 'sv' ? 'Börja nu – det tar bara 10-15 minuter' : 'Start now – it only takes 10-15 minutes'}
             <ArrowRight className="w-5 h-5" />
@@ -273,7 +273,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="mt-24 pt-8 border-t border-gray-200 dark:border-gray-700"
+          className="mt-24 pt-8 border-t border-border"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
@@ -285,7 +285,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 className="h-8 w-auto"
               />
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               {locale === 'sv'
                 ? '© 2025 Curago. Verktyg för digital transformation.'
                 : '© 2025 Curago. Tools for digital transformation.'}

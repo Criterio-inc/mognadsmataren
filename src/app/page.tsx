@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { LogIn } from 'lucide-react';
 import { LandingPage } from '@/components/landing/LandingPage';
 import { Assessment } from '@/components/assessment/Assessment';
 import { ResultsDashboard } from '@/components/results/ResultsDashboard';
@@ -38,14 +40,23 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Laddar...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Laddar...</div>
       </div>
     );
   }
 
   return (
     <main className="relative">
+      {/* Login link for consultants */}
+      <Link
+        href="/login"
+        className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <LogIn className="w-4 h-4" />
+        Konsult
+      </Link>
+
       {/* Language switcher */}
       <div className="fixed top-4 right-4 z-50">
         <LanguageSwitcher />
