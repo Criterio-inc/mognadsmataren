@@ -13,6 +13,7 @@ import {
   Copy,
   CheckCircle,
   Settings,
+  BarChart3,
 } from 'lucide-react';
 import { formatDate, isDeadlinePassed } from '@/lib/utils';
 
@@ -183,6 +184,15 @@ export default function ProjectDetailPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          {aggregatedScores && (
+            <Link
+              href={`/dashboard/project/${params.id}/report`}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <BarChart3 className="w-4 h-4" />
+              Visa rapport
+            </Link>
+          )}
           <div className="relative">
             <button
               onClick={() => setShowSettings(!showSettings)}
