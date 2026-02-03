@@ -65,11 +65,11 @@ export function LandingPage({ onStart }: LandingPageProps) {
           className="flex justify-center mb-16"
         >
           <Image
-            src="/curago-logo.png"
+            src="/curago-logo.svg"
             alt="Curago"
             width={320}
-            height={100}
-            className="h-20 md:h-28 w-auto"
+            height={80}
+            className="h-16 md:h-20 w-auto"
             priority
           />
         </motion.div>
@@ -278,11 +278,11 @@ export function LandingPage({ onStart }: LandingPageProps) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <Image
-                src="/curago-logo.png"
+                src="/curago-logo.svg"
                 alt="Curago"
                 width={120}
-                height={40}
-                className="h-8 w-auto"
+                height={30}
+                className="h-6 w-auto"
               />
             </div>
             <p className="text-sm text-muted-foreground">
