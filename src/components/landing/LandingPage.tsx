@@ -57,19 +57,19 @@ export function LandingPage({ onStart }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero section */}
-      <div className="max-w-6xl mx-auto px-4 pt-8 pb-24">
-        {/* Curago Logo */}
+      <div className="max-w-6xl mx-auto px-4 pt-12 pb-24">
+        {/* Curago Logo - larger */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center mb-12"
+          className="flex justify-center mb-16"
         >
           <Image
             src="/curago-logo.png"
             alt="Curago"
-            width={240}
-            height={80}
-            className="h-16 md:h-20 w-auto"
+            width={320}
+            height={100}
+            className="h-20 md:h-28 w-auto"
             priority
           />
         </motion.div>
@@ -145,7 +145,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           transition={{ delay: 0.5 }}
           className="mb-24"
         >
-          <h2 className="text-2xl font-bold text-foreground text-center mb-8">
+          <h2 className="text-2xl font-bold text-foreground mb-8">
             {locale === 'sv' ? 'Fyra dimensioner av digital mognad' : 'Four dimensions of digital maturity'}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
@@ -183,12 +183,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="mb-24 bg-accent/30 dark:bg-accent/10 rounded-2xl p-8"
+          className="mb-24"
         >
-          <h2 className="text-2xl font-bold text-foreground text-center mb-6">
+          <h2 className="text-2xl font-bold text-foreground mb-6">
             {locale === 'sv' ? 'Varför mäta digital mognad?' : 'Why measure digital maturity?'}
           </h2>
-          <div className="max-w-4xl mx-auto space-y-4 text-muted-foreground">
+          <div className="space-y-4 text-muted-foreground">
             <p>
               {locale === 'sv'
                 ? 'En digital mognadsmätning skapar ett gemensamt och verifierbart nuläge för ledning och verksamhet. Den flyttar dialogen från upplevda behov och lösryckta initiativ till en sammanhängande förståelse för hur styrning, förmågor, arbetssätt och teknik faktiskt hänger ihop.'
@@ -212,9 +212,9 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="bg-card backdrop-blur rounded-2xl p-8 shadow-xl border border-border"
+          className="bg-card backdrop-blur rounded-2xl p-8 shadow-lg border border-border"
         >
-          <h2 className="text-2xl font-bold text-card-foreground text-center mb-8">
+          <h2 className="text-2xl font-bold text-card-foreground mb-8">
             {locale === 'sv' ? 'Så här fungerar det' : 'How it works'}
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
