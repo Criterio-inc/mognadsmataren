@@ -38,12 +38,59 @@ const DIMENSION_QUESTIONS = {
   agarskapGenomforande: [17, 18, 19, 20, 21, 22],
 };
 
-// Generate a weighted random score (tends toward middle values)
-function generateRealisticScore(): number {
-  const random = Math.random() + Math.random() + Math.random();
-  const normalized = random / 3;
-  const score = Math.round(normalized * 4) + 1;
-  return Math.max(1, Math.min(5, score));
+// Organization baseline - this org is strong on strategy but weak on execution
+const ORG_DIMENSION_BIAS: Record<string, number> = {
+  gemesamBild: 0.5,           // Decent shared understanding
+  strategiskKoppling: 1.0,    // Strong strategic alignment (their strength)
+  prioriteringBeslut: -0.3,   // Slightly weak on prioritization
+  agarskapGenomforande: -1.0, // Weak on execution (their challenge)
+};
+
+// Respondent profiles with different perspectives
+const RESPONDENT_PROFILES = [
+  { name: 'optimist', bias: 0.8, variance: 0.3 },      // Sees things positively
+  { name: 'pessimist', bias: -0.7, variance: 0.3 },    // More critical
+  { name: 'balanced', bias: 0, variance: 0.5 },        // Middle ground
+  { name: 'strategic', bias: 0.3, variance: 0.8, dimensionBonus: { strategiskKoppling: 1.0 } },
+  { name: 'operational', bias: -0.2, variance: 0.6, dimensionBonus: { agarskapGenomforande: 0.8 } },
+  { name: 'visionary', bias: 0.5, variance: 0.7, dimensionBonus: { gemesamBild: 0.7 } },
+  { name: 'critical', bias: -0.5, variance: 0.4 },     // Very analytical
+  { name: 'enthusiast', bias: 1.0, variance: 0.5 },    // Very positive
+  { name: 'realist', bias: 0, variance: 0.3 },         // Consistent, moderate
+  { name: 'pragmatic', bias: 0.2, variance: 0.6 },
+  { name: 'cautious', bias: -0.3, variance: 0.2 },     // Conservative answers
+  { name: 'ambitious', bias: 0.6, variance: 0.7 },
+  { name: 'detail-oriented', bias: -0.1, variance: 0.4, dimensionBonus: { prioriteringBeslut: 0.5 } },
+  { name: 'big-picture', bias: 0.4, variance: 0.5, dimensionBonus: { gemesamBild: 0.5, strategiskKoppling: 0.5 } },
+  { name: 'newcomer', bias: 0.1, variance: 1.0 },      // High variance, new to org
+];
+
+// Generate score with profile and dimension context
+function generateProfiledScore(
+  profile: typeof RESPONDENT_PROFILES[0],
+  dimension: string
+): number {
+  // Base score around 3
+  let score = 3;
+
+  // Add organization dimension bias
+  score += ORG_DIMENSION_BIAS[dimension] || 0;
+
+  // Add respondent profile bias
+  score += profile.bias;
+
+  // Add dimension-specific bonus for this profile
+  const bonus = profile.dimensionBonus as Record<string, number> | undefined;
+  if (bonus && bonus[dimension]) {
+    score += bonus[dimension];
+  }
+
+  // Add variance (random factor)
+  const variance = (Math.random() - 0.5) * 2 * profile.variance * 1.5;
+  score += variance;
+
+  // Clamp to 1-5 and round
+  return Math.max(1, Math.min(5, Math.round(score)));
 }
 
 function calculateDimensionScore(responseValues: number[]): number {
@@ -83,6 +130,7 @@ export async function POST() {
     for (let i = 0; i < 15; i++) {
       const name = SWEDISH_NAMES[i];
       const email = `${name.toLowerCase().replace(' ', '.')}@demo.se`;
+      const profile = RESPONDENT_PROFILES[i];
 
       const [assessmentSession] = await db.insert(assessmentSessions).values({
         projectId: project.id,
@@ -100,18 +148,24 @@ export async function POST() {
       };
 
       for (let q = 1; q <= 22; q++) {
-        const value = generateRealisticScore();
+        // Find which dimension this question belongs to
+        let questionDimension = 'gemesamBild';
+        for (const [dim, questions] of Object.entries(DIMENSION_QUESTIONS)) {
+          if (questions.includes(q)) {
+            questionDimension = dim;
+            break;
+          }
+        }
+
+        // Generate score based on profile and dimension
+        const value = generateProfiledScore(profile, questionDimension);
         allResponses.push({
           sessionId: assessmentSession.id,
           questionId: q,
           value,
         });
 
-        for (const [dim, questions] of Object.entries(DIMENSION_QUESTIONS)) {
-          if (questions.includes(q)) {
-            dimensionResponses[dim].push(value);
-          }
-        }
+        dimensionResponses[questionDimension].push(value);
       }
 
       await db.insert(responses).values(allResponses);
