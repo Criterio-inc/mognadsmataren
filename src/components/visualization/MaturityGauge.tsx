@@ -10,15 +10,16 @@ interface MaturityGaugeProps {
 }
 
 export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
-  const [animatedScore, setAnimatedScore] = useState(0);
+  const [animatedScore, setAnimatedScore] = useState(1);
 
   useEffect(() => {
     const timer = setTimeout(() => setAnimatedScore(score), 100);
     return () => clearTimeout(timer);
   }, [score]);
 
-  // Calculate rotation: -90deg (left) to 90deg (right) for scores 1-5
-  const rotation = ((animatedScore - 1) / 4) * 180 - 90;
+  // Calculate rotation for needle: 180° (left, score=1) to 0° (right, score=5)
+  // In CSS, 0° is up, so we need to adjust: -90° is left, +90° is right
+  const needleRotation = -90 + ((animatedScore - 1) / 4) * 180;
 
   // Get current level info
   const currentLevel = maturityLevels.find(
@@ -34,26 +35,30 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
     '#1d4ed8', // Level 5 - Dark Blue
   ];
 
+  // Gauge geometry - arc curves UPWARD (from left to right over the top)
+  // Using angles from 180° to 360° (going through 270° which is "up" in SVG)
+  const cx = 100;
+  const cy = 100;
+  const outerRadius = 70;
+  const innerRadius = 45;
+  const labelRadius = 85;
+
   return (
     <div className="flex flex-col items-center">
       {/* Gauge */}
-      <div className="relative w-80 h-48">
+      <div className="relative w-80 h-40">
         {/* Background arc segments */}
         <svg
-          viewBox="0 0 200 120"
+          viewBox="0 0 200 115"
           className="w-full h-full"
         >
-          {/* Arc segments */}
+          {/* Arc segments - going from 180° to 360° (left to right, curving up) */}
           {[0, 1, 2, 3, 4].map((i) => {
-            const startAngle = -90 + (i * 36);
-            const endAngle = -90 + ((i + 1) * 36);
+            // Each segment is 36° wide
+            const startAngle = 180 + (i * 36);
+            const endAngle = 180 + ((i + 1) * 36);
             const startRad = (startAngle * Math.PI) / 180;
             const endRad = (endAngle * Math.PI) / 180;
-
-            const outerRadius = 80;
-            const innerRadius = 55;
-            const cx = 100;
-            const cy = 95;
 
             const x1 = cx + outerRadius * Math.cos(startRad);
             const y1 = cy + outerRadius * Math.sin(startRad);
@@ -77,11 +82,11 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
 
           {/* Level labels - positioned along the outer edge */}
           {[1, 2, 3, 4, 5].map((level, i) => {
-            const angle = -90 + (i * 36) + 18;
+            // Label in the middle of each segment
+            const angle = 180 + (i * 36) + 18;
             const rad = (angle * Math.PI) / 180;
-            const labelRadius = 92;
-            const x = 100 + labelRadius * Math.cos(rad);
-            const y = 95 + labelRadius * Math.sin(rad);
+            const x = cx + labelRadius * Math.cos(rad);
+            const y = cy + labelRadius * Math.sin(rad);
 
             return (
               <text
@@ -90,29 +95,30 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
                 y={y}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="text-xs fill-gray-600 dark:fill-gray-400 font-semibold"
+                className="text-sm fill-gray-600 dark:fill-gray-400 font-bold"
               >
                 {level}
               </text>
             );
           })}
 
-          {/* Center decoration */}
-          <circle cx="100" cy="95" r="12" fill="currentColor" className="text-gray-800 dark:text-gray-200" />
-          <circle cx="100" cy="95" r="8" fill="currentColor" className="text-gray-100 dark:text-gray-700" />
+          {/* Center decoration (needle pivot point) */}
+          <circle cx={cx} cy={cy} r="10" fill="currentColor" className="text-gray-800 dark:text-gray-200" />
+          <circle cx={cx} cy={cy} r="6" fill="currentColor" className="text-gray-100 dark:text-gray-700" />
         </svg>
 
         {/* Animated needle */}
         <motion.div
-          className="absolute left-1/2 origin-bottom"
+          className="absolute origin-bottom"
           style={{
             width: '4px',
-            height: '65px',
+            height: '50px',
+            left: '50%',
             marginLeft: '-2px',
-            bottom: '28px',
+            bottom: '22px',
           }}
           initial={{ rotate: -90 }}
-          animate={{ rotate: rotation }}
+          animate={{ rotate: needleRotation }}
           transition={{ type: 'spring', stiffness: 60, damping: 15 }}
         >
           <div className="w-full h-full bg-gradient-to-t from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 rounded-full" />
@@ -122,7 +128,7 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
 
       {/* Score display */}
       <motion.div
-        className="mt-4 text-center"
+        className="mt-2 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
