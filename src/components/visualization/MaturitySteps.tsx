@@ -103,17 +103,27 @@ export function MaturitySteps({ currentLevel, locale }: MaturityStepsProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
       >
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
           {locale === 'sv' ? 'Er nuvarande nivå' : 'Your current level'}
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
+        <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
           {maturityLevels[currentLevel - 1][locale].description}
         </p>
+
         <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {locale === 'sv' ? 'Typiska behov på denna nivå:' : 'Typical needs at this level:'}
+          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            {locale === 'sv' ? 'Kännetecken för denna nivå:' : 'Characteristics of this level:'}
           </h4>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            {maturityLevels[currentLevel - 1][locale].characteristics}
+          </p>
+        </div>
+
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            {locale === 'sv' ? 'Typiska behov och rekommenderade insatser:' : 'Typical needs and recommended actions:'}
+          </h4>
+          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
             {maturityLevels[currentLevel - 1][locale].typicalNeeds}
           </p>
         </div>
