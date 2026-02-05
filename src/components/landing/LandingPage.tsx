@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAssessmentStore } from '@/lib/store';
 import { ArrowRight, BarChart3, Users, Lightbulb, Clock } from 'lucide-react';
@@ -57,15 +58,19 @@ export function LandingPage({ onStart }: LandingPageProps) {
     <div className="min-h-screen bg-background">
       {/* Hero section */}
       <div className="max-w-6xl mx-auto px-4 pt-12 pb-24">
-        {/* Header text */}
+        {/* Orange icon logo at top */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center mb-16"
+          className="flex justify-center mb-12"
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-primary">
-            {locale === 'sv' ? 'Digital mognadsmätare' : 'Digital Maturity Meter'}
-          </h1>
+          <Image
+            src="/critero-icon.svg"
+            alt="Critero"
+            width={120}
+            height={72}
+            className="h-16 w-auto"
+          />
         </motion.div>
 
         <motion.div
@@ -73,9 +78,9 @@ export function LandingPage({ onStart }: LandingPageProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             {locale === 'sv' ? 'Mognadsmätaren' : 'Maturity Meter'}
-          </h2>
+          </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-3xl mx-auto">
             {locale === 'sv'
               ? 'Mät er ledningsgrupps digitala mognad'
@@ -118,9 +123,9 @@ export function LandingPage({ onStart }: LandingPageProps) {
                   boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
                 }}
                 transition={{ delay: 0.3 + index * 0.1, type: "spring", stiffness: 300 }}
-                className="bg-card backdrop-blur rounded-xl p-6 shadow-lg cursor-pointer border border-border"
+                className="bg-card backdrop-blur rounded-xl p-6 shadow-lg cursor-pointer border border-border text-center"
               >
-                <Icon className="w-10 h-10 text-primary mb-4" />
+                <Icon className="w-10 h-10 text-primary mb-4 mx-auto" />
                 <h3 className="font-semibold text-card-foreground mb-1">
                   {feature[locale].title}
                 </h3>
@@ -137,12 +142,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mb-24"
+          className="mb-24 text-center"
         >
           <h2 className="text-2xl font-bold text-foreground mb-8">
             {locale === 'sv' ? 'Fyra dimensioner av digital mognad' : 'Four dimensions of digital maturity'}
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {dimensions.map((dim, index) => (
               <motion.div
                 key={index}
@@ -150,16 +155,15 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 animate={{ opacity: 1, x: 0 }}
                 whileHover={{
                   scale: 1.02,
-                  x: index % 2 === 0 ? 5 : -5,
                   boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
                 }}
                 transition={{ delay: 0.6 + index * 0.1, type: "spring", stiffness: 300 }}
-                className="flex items-start gap-4 bg-card/80 backdrop-blur rounded-xl p-6 cursor-pointer border border-border"
+                className="flex items-center gap-4 bg-card/80 backdrop-blur rounded-xl p-6 cursor-pointer border border-border"
               >
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
                   {index + 1}
                 </div>
-                <div>
+                <div className="text-left">
                   <h3 className="font-semibold text-card-foreground mb-1">
                     {dim[locale].name}
                   </h3>
@@ -177,7 +181,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="mb-24"
+          className="mb-24 text-center max-w-4xl mx-auto"
         >
           <h2 className="text-2xl font-bold text-foreground mb-6">
             {locale === 'sv' ? 'Varför mäta digital mognad?' : 'Why measure digital maturity?'}
@@ -206,7 +210,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="bg-card backdrop-blur rounded-2xl p-8 shadow-lg border border-border"
+          className="bg-card backdrop-blur rounded-2xl p-8 shadow-lg border border-border text-center"
         >
           <h2 className="text-2xl font-bold text-card-foreground mb-8">
             {locale === 'sv' ? 'Så här fungerar det' : 'How it works'}
@@ -262,18 +266,23 @@ export function LandingPage({ onStart }: LandingPageProps) {
           </button>
         </motion.div>
 
-        {/* Footer */}
+        {/* Footer with logo and copyright */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
           className="mt-24 pt-8 border-t border-border"
         >
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col items-center gap-4">
+            <Image
+              src="/critero-logo.svg"
+              alt="Critero"
+              width={160}
+              height={80}
+              className="h-16 w-auto"
+            />
             <p className="text-sm text-muted-foreground">
-              {locale === 'sv'
-                ? '© 2025 Digital mognadsmätare. Verktyg för digital transformation.'
-                : '© 2025 Digital Maturity Meter. Tools for digital transformation.'}
+              © Critero AB
             </p>
           </div>
         </motion.footer>
