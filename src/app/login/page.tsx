@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 import { signIn, signUp } from '@/lib/supabase';
@@ -59,14 +58,9 @@ export default function LoginPage() {
       >
         <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl p-8 shadow-xl">
           <div className="flex justify-center mb-8">
-            <Image
-              src="/curago-logo.png"
-              alt="Curago"
-              width={180}
-              height={60}
-              className="h-12 w-auto"
-              priority
-            />
+            <span className="text-2xl font-bold" style={{ color: '#1a5f5a' }}>
+              Digital mognadsmätare
+            </span>
           </div>
 
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white text-center mb-2">
@@ -105,7 +99,7 @@ export default function LoginPage() {
               <input
                 type="email"
                 required
-                placeholder="din.email@curago.se"
+                placeholder="din.email@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow"
@@ -171,9 +165,6 @@ export default function LoginPage() {
             </button>
           </p>
 
-          <p className="mt-4 text-xs text-slate-400 dark:text-slate-500 text-center">
-            Endast för Curago-konsulter med @curago.se-adress
-          </p>
         </div>
 
         <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
