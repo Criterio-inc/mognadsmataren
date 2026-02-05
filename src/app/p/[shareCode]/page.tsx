@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, AlertCircle, Mail, User, Globe } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, AlertCircle, Mail, User, Globe, Home } from 'lucide-react';
 import { questions, dimensions } from '@/lib/questions';
 import { getTranslations, type Locale } from '@/lib/translations';
 
@@ -155,7 +155,7 @@ export default function SurveyPage() {
 
   // Header text component
   const HeaderText = ({ className = '' }: { className?: string }) => (
-    <span className={`font-bold text-blue-600 dark:text-blue-400 ${className}`}>
+    <span className={`font-bold ${className}`} style={{ color: '#1a5f5a' }}>
       {locale === 'sv' ? 'Digital mognadsmätare' : 'Digital Maturity Meter'}
     </span>
   );
@@ -317,6 +317,14 @@ export default function SurveyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <LanguageToggle />
+      {/* Back to start link */}
+      <a
+        href="/"
+        className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 transition-colors"
+      >
+        <Home className="w-4 h-4" />
+        {locale === 'sv' ? 'Startsida' : 'Home'}
+      </a>
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
         <motion.div
