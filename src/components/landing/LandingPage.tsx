@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAssessmentStore } from '@/lib/store';
-import { ArrowRight, BarChart3, Users, Lightbulb, Clock, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowRight, BarChart3, Users, Lightbulb, Clock, TrendingUp, Sparkles, Mail } from 'lucide-react';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -35,24 +35,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
     },
   ];
 
-  const dimensions = [
-    {
-      sv: { name: 'Gemensam Bild', description: 'Förståelse för digitaliseringens innebörd' },
-      en: { name: 'Shared Understanding', description: 'Understanding what digitalization means' },
-    },
-    {
-      sv: { name: 'Strategisk Koppling', description: 'Koppling till verksamhetsmål' },
-      en: { name: 'Strategic Alignment', description: 'Connection to business goals' },
-    },
-    {
-      sv: { name: 'Prioritering & Beslut', description: 'Förmåga att prioritera och besluta' },
-      en: { name: 'Prioritization & Decisions', description: 'Ability to prioritize and decide' },
-    },
-    {
-      sv: { name: 'Ägarskap & Genomförande', description: 'Ansvar och förändringsledning' },
-      en: { name: 'Ownership & Execution', description: 'Responsibility and change management' },
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -331,45 +313,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
           })}
         </motion.div>
 
-        {/* Dimensions section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mb-24 text-center"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-8">
-            {locale === 'sv' ? 'Fyra dimensioner av digital mognad' : 'Four dimensions of digital maturity'}
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {dimensions.map((dim, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
-                }}
-                transition={{ delay: 0.6 + index * 0.1, type: "spring", stiffness: 300 }}
-                className="flex items-center gap-4 bg-card/80 backdrop-blur rounded-xl p-6 cursor-pointer border border-border"
-              >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
-                  {index + 1}
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-card-foreground mb-1">
-                    {dim[locale].name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {dim[locale].description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
         {/* Why digital maturity assessment */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -444,20 +387,32 @@ export function LandingPage({ onStart }: LandingPageProps) {
           </div>
         </motion.div>
 
-        {/* CTA */}
+        {/* Team version CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
-          className="text-center mt-16"
+          className="mt-16 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 text-center border border-slate-700"
         >
-          <button
-            onClick={onStart}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+          <Users className="w-12 h-12 text-orange-400 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-white mb-2">
+            {locale === 'sv' ? 'Vill ni mäta hela ledningsgruppen?' : 'Want to assess your entire leadership team?'}
+          </h3>
+          <p className="text-slate-300 mb-6 max-w-xl mx-auto">
+            {locale === 'sv'
+              ? 'Få aggregerade resultat med flera svaranden, jämförelseanalys och professionell facilitering av er digitala mognadsmätning.'
+              : 'Get aggregated results with multiple respondents, comparative analysis and professional facilitation of your digital maturity assessment.'}
+          </p>
+          <a
+            href="mailto:kontakt@criteroconsulting.se?subject=Digital mognadsmätning – förfrågan"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
           >
-            {locale === 'sv' ? 'Börja nu – det tar bara 10-15 minuter' : 'Start now – it only takes 10-15 minutes'}
-            <ArrowRight className="w-5 h-5" />
-          </button>
+            <Mail className="w-5 h-5" />
+            {locale === 'sv' ? 'Kontakta oss' : 'Contact us'}
+          </a>
+          <p className="mt-4 text-sm text-slate-400">
+            kontakt@criteroconsulting.se
+          </p>
         </motion.div>
 
         {/* Footer with logo and copyright */}
