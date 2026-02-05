@@ -1,6 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { SignOutButton } from './SignOutButton';
 
@@ -25,14 +24,8 @@ export default async function DashboardLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
-              <Link href="/dashboard">
-                <Image
-                  src="/curago-logo.png"
-                  alt="Curago"
-                  width={120}
-                  height={40}
-                  className="h-8 w-auto"
-                />
+              <Link href="/dashboard" className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                Digital mognadsmätare
               </Link>
               <nav className="hidden md:flex items-center gap-6">
                 <Link

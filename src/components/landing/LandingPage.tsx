@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAssessmentStore } from '@/lib/store';
 import { ArrowRight, BarChart3, Users, Lightbulb, Clock } from 'lucide-react';
@@ -58,20 +57,15 @@ export function LandingPage({ onStart }: LandingPageProps) {
     <div className="min-h-screen bg-background">
       {/* Hero section */}
       <div className="max-w-6xl mx-auto px-4 pt-12 pb-24">
-        {/* Curago Logo - larger */}
+        {/* Header text */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex justify-center mb-16"
         >
-          <Image
-            src="/curago-logo.svg"
-            alt="Curago"
-            width={320}
-            height={80}
-            className="h-16 md:h-20 w-auto"
-            priority
-          />
+          <h1 className="text-2xl md:text-3xl font-bold text-primary">
+            {locale === 'sv' ? 'Digital mognadsmätare' : 'Digital Maturity Meter'}
+          </h1>
         </motion.div>
 
         <motion.div
@@ -79,9 +73,9 @@ export function LandingPage({ onStart }: LandingPageProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             {locale === 'sv' ? 'Mognadsmätaren' : 'Maturity Meter'}
-          </h1>
+          </h2>
           <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-3xl mx-auto">
             {locale === 'sv'
               ? 'Mät er ledningsgrupps digitala mognad'
@@ -201,8 +195,8 @@ export function LandingPage({ onStart }: LandingPageProps) {
             </p>
             <p className="font-medium text-foreground">
               {locale === 'sv'
-                ? 'Resultatet är en digital förflyttning som bygger på genomförbarhet, tydligt ansvar och ett tempo som organisationen faktiskt klarar att hålla över tid – i linje med Curagos 5-stegsmodell för digital förflyttning.'
-                : 'The result is a digital transformation built on feasibility, clear accountability and a pace the organization can actually sustain over time – in line with Curago\'s 5-step model for digital transformation.'}
+                ? 'Resultatet är en digital förflyttning som bygger på genomförbarhet, tydligt ansvar och ett tempo som organisationen faktiskt klarar att hålla över tid.'
+                : 'The result is a digital transformation built on feasibility, clear accountability and a pace the organization can actually sustain over time.'}
             </p>
           </div>
         </motion.div>
@@ -275,20 +269,11 @@ export function LandingPage({ onStart }: LandingPageProps) {
           transition={{ delay: 1.2 }}
           className="mt-24 pt-8 border-t border-border"
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/curago-logo.svg"
-                alt="Curago"
-                width={120}
-                height={30}
-                className="h-6 w-auto"
-              />
-            </div>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
             <p className="text-sm text-muted-foreground">
               {locale === 'sv'
-                ? '© 2025 Curago. Verktyg för digital transformation.'
-                : '© 2025 Curago. Tools for digital transformation.'}
+                ? '© 2025 Digital mognadsmätare. Verktyg för digital transformation.'
+                : '© 2025 Digital Maturity Meter. Tools for digital transformation.'}
             </p>
           </div>
         </motion.footer>

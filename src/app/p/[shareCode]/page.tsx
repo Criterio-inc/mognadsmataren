@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check, AlertCircle, Mail, User, Globe } from 'lucide-react';
 import { questions, dimensions } from '@/lib/questions';
@@ -154,6 +153,13 @@ export default function SurveyPage() {
     </button>
   );
 
+  // Header text component
+  const HeaderText = ({ className = '' }: { className?: string }) => (
+    <span className={`font-bold text-blue-600 dark:text-blue-400 ${className}`}>
+      {locale === 'sv' ? 'Digital mognadsmätare' : 'Digital Maturity Meter'}
+    </span>
+  );
+
   // Render different steps
   if (step === 'loading') {
     return (
@@ -219,13 +225,7 @@ export default function SurveyPage() {
             {t.responsesRecorded}
           </p>
           <div className="flex justify-center">
-            <Image
-              src="/curago-logo.png"
-              alt="Curago"
-              width={120}
-              height={40}
-              className="h-8 w-auto opacity-50"
-            />
+            <HeaderText className="text-lg opacity-50" />
           </div>
         </motion.div>
       </div>
@@ -242,13 +242,7 @@ export default function SurveyPage() {
           className="max-w-md w-full"
         >
           <div className="flex justify-center mb-8">
-            <Image
-              src="/curago-logo.png"
-              alt="Curago"
-              width={160}
-              height={53}
-              className="h-12 w-auto"
-            />
+            <HeaderText className="text-2xl" />
           </div>
 
           <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl p-8 shadow-xl">
@@ -336,13 +330,7 @@ export default function SurveyPage() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Image
-            src="/curago-logo.png"
-            alt="Curago"
-            width={100}
-            height={33}
-            className="h-6 w-auto opacity-70"
-          />
+          <HeaderText className="text-sm opacity-70" />
           <span className="text-sm text-slate-500 dark:text-slate-400">
             {t.question} {currentQuestionIndex + 1} {t.of} {questions.length}
           </span>
