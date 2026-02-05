@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, AlertCircle, Mail, User } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, AlertCircle, Mail, User, Globe } from 'lucide-react';
 import { questions, dimensions } from '@/lib/questions';
+import { getTranslations, type Locale } from '@/lib/translations';
 
 type Step = 'loading' | 'error' | 'closed' | 'email' | 'assessment' | 'completed';
 
@@ -19,6 +19,11 @@ interface ProjectInfo {
 export default function SurveyPage() {
   const params = useParams();
   const shareCode = params.shareCode as string;
+
+  // Local locale state for survey page (independent of main app)
+  const [locale, setLocale] = useState<Locale>('sv');
+  const t = getTranslations('survey', locale);
+  const tCommon = getTranslations('common', locale);
 
   const [step, setStep] = useState<Step>('loading');
   const [project, setProject] = useState<ProjectInfo | null>(null);
@@ -45,7 +50,7 @@ export default function SurveyPage() {
       setProject(data.project || null);
       setStep('closed');
     } else {
-      setErrorMessage(data.error || 'Enkäten kunde inte hittas');
+      setErrorMessage(data.error || t.surveyNotFound);
       setStep('error');
     }
   }
@@ -71,7 +76,7 @@ export default function SurveyPage() {
       setCurrentQuestionIndex(Math.min(answeredCount, questions.length - 1));
       setStep('assessment');
     } else {
-      setErrorMessage(data.error || 'Något gick fel');
+      setErrorMessage(data.error || tCommon.error);
     }
 
     setIsSubmitting(false);
@@ -104,7 +109,7 @@ export default function SurveyPage() {
       setStep('completed');
     } else {
       const data = await res.json();
-      setErrorMessage(data.error || 'Något gick fel vid inskickning');
+      setErrorMessage(data.error || t.submitError);
     }
 
     setIsSubmitting(false);
@@ -115,6 +120,15 @@ export default function SurveyPage() {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const allAnswered = Object.keys(responses).length === questions.length;
+
+  // Rating scale labels
+  const ratingLabels = [
+    { value: 1, label: t.rating1 },
+    { value: 2, label: t.rating2 },
+    { value: 3, label: t.rating3 },
+    { value: 4, label: t.rating4 },
+    { value: 5, label: t.rating5 },
+  ];
 
   function goNext() {
     if (currentQuestionIndex < questions.length - 1) {
@@ -128,11 +142,29 @@ export default function SurveyPage() {
     }
   }
 
+  // Language switcher component for survey
+  const LanguageToggle = () => (
+    <button
+      onClick={() => setLocale(locale === 'sv' ? 'en' : 'sv')}
+      className="fixed top-4 right-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 transition-colors"
+    >
+      <Globe className="w-4 h-4" />
+      {locale === 'sv' ? 'EN' : 'SV'}
+    </button>
+  );
+
+  // Header text component
+  const HeaderText = ({ className = '' }: { className?: string }) => (
+    <span className={`font-bold text-blue-600 dark:text-blue-400 ${className}`}>
+      {locale === 'sv' ? 'Digital mognadsmätare' : 'Digital Maturity Meter'}
+    </span>
+  );
+
   // Render different steps
   if (step === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
-        <div className="animate-pulse text-slate-400">Laddar enkät...</div>
+        <div className="animate-pulse text-slate-400">{t.loadingSurvey}</div>
       </div>
     );
   }
@@ -140,10 +172,11 @@ export default function SurveyPage() {
   if (step === 'error') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+        <LanguageToggle />
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-            Enkäten kunde inte hittas
+            {t.surveyNotFound}
           </h1>
           <p className="text-slate-500 dark:text-slate-400">{errorMessage}</p>
         </div>
@@ -154,15 +187,20 @@ export default function SurveyPage() {
   if (step === 'closed') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+        <LanguageToggle />
         <div className="text-center max-w-md">
           <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-slate-400" />
           </div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-            Enkäten är stängd
+            {t.surveyClosed}
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            {project?.name ? `Enkäten "${project.name}" är inte längre öppen för svar.` : 'Denna enkät är inte längre öppen för svar.'}
+            {project?.name
+              ? (locale === 'sv'
+                  ? `Enkäten "${project.name}" är inte längre öppen för svar.`
+                  : `The survey "${project.name}" is no longer accepting responses.`)
+              : t.surveyClosedDescription}
           </p>
         </div>
       </div>
@@ -181,19 +219,13 @@ export default function SurveyPage() {
             <Check className="w-10 h-10 text-green-600 dark:text-green-400" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-            Tack för ditt svar!
+            {t.thankYou}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mb-8">
-            Dina svar har registrerats. Curago kommer att återkomma med en samlad analys av ledningsgruppens resultat.
+            {t.responsesRecorded}
           </p>
           <div className="flex justify-center">
-            <Image
-              src="/curago-logo.png"
-              alt="Curago"
-              width={120}
-              height={40}
-              className="h-8 w-auto opacity-50"
-            />
+            <HeaderText className="text-lg opacity-50" />
           </div>
         </motion.div>
       </div>
@@ -203,19 +235,14 @@ export default function SurveyPage() {
   if (step === 'email') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+        <LanguageToggle />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md w-full"
         >
           <div className="flex justify-center mb-8">
-            <Image
-              src="/curago-logo.png"
-              alt="Curago"
-              width={160}
-              height={53}
-              className="h-12 w-auto"
-            />
+            <HeaderText className="text-2xl" />
           </div>
 
           <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl p-8 shadow-xl">
@@ -223,7 +250,7 @@ export default function SurveyPage() {
               {project?.name}
             </h1>
             <p className="text-slate-500 dark:text-slate-400 text-center mb-8">
-              Digital mognadsmätning för {project?.clientName}
+              {t.digitalMaturityFor} {project?.clientName}
             </p>
 
             {errorMessage && (
@@ -236,29 +263,31 @@ export default function SurveyPage() {
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   <Mail className="w-4 h-4" />
-                  Din e-postadress
+                  {t.yourEmail}
                 </label>
                 <input
                   type="email"
                   required
-                  placeholder={`namn@${project?.clientDomain}`}
+                  placeholder={`${locale === 'sv' ? 'namn' : 'name'}@${project?.clientDomain}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow"
                 />
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                  Endast @{project?.clientDomain} kan delta
+                  {locale === 'sv'
+                    ? `Endast @${project?.clientDomain} kan delta`
+                    : `Only @${project?.clientDomain} can participate`}
                 </p>
               </div>
 
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   <User className="w-4 h-4" />
-                  Ditt namn (valfritt)
+                  {t.yourName}
                 </label>
                 <input
                   type="text"
-                  placeholder="Förnamn Efternamn"
+                  placeholder={t.namePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow"
@@ -270,13 +299,13 @@ export default function SurveyPage() {
                 disabled={isSubmitting}
                 className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
               >
-                {isSubmitting ? 'Startar...' : 'Starta enkäten'}
+                {isSubmitting ? t.starting : t.startSurvey}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </form>
 
             <p className="mt-6 text-xs text-slate-400 text-center">
-              Enkäten tar ca 10-15 minuter att genomföra
+              {t.surveyDuration}
             </p>
           </div>
         </motion.div>
@@ -287,6 +316,7 @@ export default function SurveyPage() {
   // Assessment step
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <LanguageToggle />
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
         <motion.div
@@ -300,22 +330,16 @@ export default function SurveyPage() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Image
-            src="/curago-logo.png"
-            alt="Curago"
-            width={100}
-            height={33}
-            className="h-6 w-auto opacity-70"
-          />
+          <HeaderText className="text-sm opacity-70" />
           <span className="text-sm text-slate-500 dark:text-slate-400">
-            Fråga {currentQuestionIndex + 1} av {questions.length}
+            {t.question} {currentQuestionIndex + 1} {t.of} {questions.length}
           </span>
         </div>
 
         {/* Dimension indicator */}
         <div className="mb-6">
           <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-full">
-            {currentDimension?.sv.name}
+            {currentDimension?.[locale].name}
           </span>
         </div>
 
@@ -330,18 +354,12 @@ export default function SurveyPage() {
             className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl p-8 shadow-xl mb-8"
           >
             <h2 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white mb-8">
-              {currentQuestion?.sv}
+              {currentQuestion?.[locale]}
             </h2>
 
             {/* Rating scale */}
             <div className="space-y-3">
-              {[
-                { value: 1, label: 'Stämmer inte alls' },
-                { value: 2, label: 'Stämmer till viss del' },
-                { value: 3, label: 'Stämmer delvis' },
-                { value: 4, label: 'Stämmer till stor del' },
-                { value: 5, label: 'Stämmer helt' },
-              ].map((option) => (
+              {ratingLabels.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => saveResponse(currentQuestion.id, option.value)}
@@ -383,7 +401,7 @@ export default function SurveyPage() {
             className="flex items-center gap-2 px-4 py-2 text-slate-600 dark:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            Föregående
+            {t.previous}
           </button>
 
           {isLastQuestion ? (
@@ -392,7 +410,7 @@ export default function SurveyPage() {
               disabled={!allAnswered || isSubmitting}
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Skickar...' : 'Skicka in svar'}
+              {isSubmitting ? t.submitting : t.submitResponses}
               <Check className="w-5 h-5" />
             </button>
           ) : (
@@ -401,7 +419,7 @@ export default function SurveyPage() {
               disabled={!responses[currentQuestion?.id]}
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Nästa
+              {t.next}
               <ArrowRight className="w-5 h-5" />
             </button>
           )}

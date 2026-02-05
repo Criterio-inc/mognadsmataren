@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Users, Calendar, Link as LinkIcon, MoreVertical, Trash2, Sparkles } from 'lucide-react';
 import { formatDate, isDeadlinePassed } from '@/lib/utils';
+import { useAssessmentStore } from '@/lib/store';
+import { getTranslations } from '@/lib/translations';
 
 interface Project {
   id: string;
@@ -18,6 +20,11 @@ interface Project {
 }
 
 export default function DashboardPage() {
+  const locale = useAssessmentStore((state) => state.locale);
+  const t = getTranslations('dashboard', locale);
+  const tStatus = getTranslations('status', locale);
+  const tCommon = getTranslations('common', locale);
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showNewProject, setShowNewProject] = useState(false);
@@ -43,13 +50,22 @@ export default function DashboardPage() {
       const res = await fetch('/api/seed-demo', { method: 'POST' });
       const data = await res.json();
       if (res.ok) {
-        alert(`Demo-projekt skapat! Gå till rapporten: ${data.reportUrl}`);
+        alert(locale === 'sv'
+          ? `Demo-projekt skapat! Gå till rapporten: ${data.reportUrl}`
+          : `Demo project created! Go to the report: ${data.reportUrl}`
+        );
         fetchProjects();
       } else {
-        alert(`Kunde inte skapa demo-projekt: ${data.details || data.error}`);
+        alert(locale === 'sv'
+          ? `Kunde inte skapa demo-projekt: ${data.details || data.error}`
+          : `Could not create demo project: ${data.details || data.error}`
+        );
       }
     } catch (err) {
-      alert(`Fel vid skapande av demo-projekt: ${err}`);
+      alert(locale === 'sv'
+        ? `Fel vid skapande av demo-projekt: ${err}`
+        : `Error creating demo project: ${err}`
+      );
     } finally {
       setIsCreatingDemo(false);
     }
@@ -79,15 +95,15 @@ export default function DashboardPage() {
   };
 
   const statusLabels = {
-    draft: 'Utkast',
-    active: 'Aktiv',
-    closed: 'Stängd',
+    draft: tStatus.draft,
+    active: tStatus.active,
+    closed: tStatus.closed,
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-pulse text-slate-400">Laddar projekt...</div>
+        <div className="animate-pulse text-slate-400">{t.loadingProjects}</div>
       </div>
     );
   }
@@ -98,10 +114,10 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Mina projekt
+            {t.myProjects}
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            Hantera dina kundprojekt och se resultat
+            {t.manageProjects}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -111,14 +127,14 @@ export default function DashboardPage() {
             className="inline-flex items-center gap-2 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors disabled:opacity-50"
           >
             <Sparkles className="w-4 h-4" />
-            {isCreatingDemo ? 'Skapar...' : 'Demo-projekt'}
+            {isCreatingDemo ? t.creating : t.demoProject}
           </button>
           <Link
             href="/dashboard/new"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
-            Nytt projekt
+            {t.newProject}
           </Link>
         </div>
       </div>
@@ -130,17 +146,17 @@ export default function DashboardPage() {
             <Users className="w-8 h-8 text-slate-400" />
           </div>
           <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">
-            Inga projekt ännu
+            {t.noProjectsYet}
           </h3>
           <p className="text-slate-500 dark:text-slate-400 mb-6">
-            Skapa ditt första projekt för att börja samla in svar
+            {t.createFirstProject}
           </p>
           <Link
             href="/dashboard/new"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
-            Skapa projekt
+            {t.createProject}
           </Link>
         </div>
       ) : (
@@ -172,7 +188,7 @@ export default function DashboardPage() {
               <div className="space-y-2 mb-4">
                 <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                   <Users className="w-4 h-4" />
-                  <span>{project.responseCount} svar</span>
+                  <span>{project.responseCount} {t.responses}</span>
                 </div>
                 {project.deadline && (
                   <div
@@ -184,7 +200,7 @@ export default function DashboardPage() {
                   >
                     <Calendar className="w-4 h-4" />
                     <span>
-                      {isDeadlinePassed(project.deadline) ? 'Stängdes ' : 'Stänger '}
+                      {isDeadlinePassed(project.deadline) ? t.closedOn : t.closesOn}{' '}
                       {formatDate(project.deadline)}
                     </span>
                   </div>
@@ -197,13 +213,13 @@ export default function DashboardPage() {
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                 >
                   <LinkIcon className="w-4 h-4" />
-                  Kopiera länk
+                  {t.copyLink}
                 </button>
                 <Link
                   href={`/dashboard/project/${project.id}`}
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  Visa resultat
+                  {t.viewResults}
                 </Link>
                 <div className="relative">
                   <button
@@ -221,7 +237,7 @@ export default function DashboardPage() {
                         className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                       >
                         <Trash2 className="w-4 h-4" />
-                        Ta bort projekt
+                        {t.deleteProject}
                       </button>
                     </div>
                   )}

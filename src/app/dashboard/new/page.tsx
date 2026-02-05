@@ -4,9 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Building2, Globe, FileText } from 'lucide-react';
+import { useAssessmentStore } from '@/lib/store';
+import { getTranslations } from '@/lib/translations';
 
 export default function NewProjectPage() {
   const router = useRouter();
+  const locale = useAssessmentStore((state) => state.locale);
+  const t = getTranslations('newProjectPage', locale);
+  const tDashboard = getTranslations('dashboard', locale);
+  const tCommon = getTranslations('common', locale);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,10 +43,15 @@ export default function NewProjectPage() {
       router.push(`/dashboard/project/${project.id}`);
     } else {
       const data = await res.json();
-      setError(data.error || 'Något gick fel');
+      setError(data.error || tCommon.error);
       setIsSubmitting(false);
     }
   }
+
+  // Domain restriction hint
+  const domainHint = locale === 'sv'
+    ? 'Endast e-postadresser med denna domän kan svara på enkäten'
+    : 'Only email addresses with this domain can respond to the survey';
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -48,15 +60,15 @@ export default function NewProjectPage() {
         className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
-        Tillbaka till projekt
+        {t.backToProjects}
       </Link>
 
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-8">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-          Skapa nytt projekt
+          {t.createNewProject}
         </h1>
         <p className="text-slate-500 dark:text-slate-400 mb-8">
-          Skapa ett projekt för att börja samla in svar från din kunds ledningsgrupp
+          {t.createDescription}
         </p>
 
         {error && (
@@ -69,12 +81,12 @@ export default function NewProjectPage() {
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               <FileText className="w-4 h-4" />
-              Projektnamn
+              {t.projectName}
             </label>
             <input
               type="text"
               required
-              placeholder="t.ex. Volvo Ledningsgrupp Q1 2025"
+              placeholder={t.projectNamePlaceholder}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow"
@@ -84,12 +96,12 @@ export default function NewProjectPage() {
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               <Building2 className="w-4 h-4" />
-              Kundföretag
+              {t.clientCompany}
             </label>
             <input
               type="text"
               required
-              placeholder="t.ex. Volvo"
+              placeholder={t.clientCompanyPlaceholder}
               value={formData.clientName}
               onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
               className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow"
@@ -99,14 +111,14 @@ export default function NewProjectPage() {
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               <Globe className="w-4 h-4" />
-              Kundens e-postdomän
+              {t.clientEmailDomain}
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">@</span>
               <input
                 type="text"
                 required
-                placeholder="volvo.se"
+                placeholder={t.clientEmailDomainPlaceholder}
                 value={formData.clientDomain}
                 onChange={(e) =>
                   setFormData({ ...formData, clientDomain: e.target.value.replace('@', '') })
@@ -115,14 +127,14 @@ export default function NewProjectPage() {
               />
             </div>
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Endast e-postadresser med denna domän kan svara på enkäten
+              {domainHint}
             </p>
           </div>
 
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               <Calendar className="w-4 h-4" />
-              Deadline (valfritt)
+              {t.deadline}
             </label>
             <input
               type="datetime-local"
@@ -131,7 +143,7 @@ export default function NewProjectPage() {
               className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow"
             />
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Enkäten stängs automatiskt vid denna tidpunkt
+              {t.deadlineDescription}
             </p>
           </div>
 
@@ -140,14 +152,14 @@ export default function NewProjectPage() {
               href="/dashboard"
               className="flex-1 px-4 py-3 text-center text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
             >
-              Avbryt
+              {tCommon.cancel}
             </Link>
             <button
               type="submit"
               disabled={isSubmitting}
               className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isSubmitting ? 'Skapar...' : 'Skapa projekt'}
+              {isSubmitting ? tDashboard.creating : tDashboard.createProject}
             </button>
           </div>
         </form>

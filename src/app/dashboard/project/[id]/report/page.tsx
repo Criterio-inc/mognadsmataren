@@ -17,6 +17,8 @@ import { MaturitySteps } from '@/components/visualization/MaturitySteps';
 import { DimensionBars } from '@/components/visualization/DimensionBars';
 import { AIInsightsCard } from '@/components/results/AIInsightsCard';
 import { formatDate } from '@/lib/utils';
+import { useAssessmentStore } from '@/lib/store';
+import { getTranslations } from '@/lib/translations';
 import type { Dimension } from '@/lib/questions';
 
 interface Project {
@@ -55,6 +57,10 @@ interface ProjectData {
 
 export default function ProjectReportPage() {
   const params = useParams();
+  const locale = useAssessmentStore((state) => state.locale);
+  const t = getTranslations('report', locale);
+  const tProjectDetail = getTranslations('projectDetail', locale);
+
   const [data, setData] = useState<ProjectData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [aiInsights, setAiInsights] = useState<AIInsights | null>(null);
@@ -91,7 +97,7 @@ export default function ProjectReportPage() {
           dimensionScores: scores.dimensionScores,
           overallScore: scores.overallScore,
           maturityLevel,
-          locale: 'sv',
+          locale,
         }),
       });
       if (res.ok) {
@@ -117,10 +123,13 @@ export default function ProjectReportPage() {
     setIsPrintMode(false);
   }
 
+  const projectNotFound = locale === 'sv' ? 'Projektet kunde inte hittas' : 'Project not found';
+  const backToDashboard = locale === 'sv' ? 'Tillbaka till dashboard' : 'Back to dashboard';
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-pulse text-slate-400">Laddar rapport...</div>
+        <div className="animate-pulse text-slate-400">{t.loadingReport}</div>
       </div>
     );
   }
@@ -128,9 +137,9 @@ export default function ProjectReportPage() {
   if (!data) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-500">Projektet kunde inte hittas</p>
+        <p className="text-slate-500">{projectNotFound}</p>
         <Link href="/dashboard" className="text-blue-600 hover:underline mt-2 inline-block">
-          Tillbaka till dashboard
+          {backToDashboard}
         </Link>
       </div>
     );
@@ -147,16 +156,16 @@ export default function ProjectReportPage() {
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Tillbaka till projekt
+          {tProjectDetail.backToProjects}
         </Link>
 
         <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
           <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
           <p className="text-slate-500 dark:text-slate-400 text-lg font-medium mb-2">
-            Inga slutförda svar ännu
+            {t.noCompletedResponses}
           </p>
           <p className="text-slate-400 dark:text-slate-500">
-            Rapporten visas när minst en respondent har slutfört enkäten.
+            {t.reportShownWhen}
           </p>
         </div>
       </div>
@@ -164,6 +173,16 @@ export default function ProjectReportPage() {
   }
 
   const maturityLevel = Math.round(aggregatedScores.overallScore);
+
+  // Quote translation
+  const quote = locale === 'sv'
+    ? '"En digital strategi blir bara så bra som den förankring den får i ledningen"'
+    : '"A digital strategy is only as good as the buy-in it gets from leadership"';
+
+  // Collection ended translation
+  const collectionEnded = locale === 'sv'
+    ? `Insamlingsperiod avslutad: ${formatDate(project.deadline || '')}`
+    : `Collection period ended: ${formatDate(project.deadline || '')}`;
 
   return (
     <>
@@ -199,7 +218,7 @@ export default function ProjectReportPage() {
             className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
           >
             <ArrowLeft className="w-4 h-4" />
-            Tillbaka till projekt
+            {tProjectDetail.backToProjects}
           </Link>
 
           <button
@@ -207,7 +226,7 @@ export default function ProjectReportPage() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Download className="w-4 h-4" />
-            Exportera PDF
+            {t.exportPdf}
           </button>
         </div>
       </div>
@@ -217,24 +236,24 @@ export default function ProjectReportPage() {
         <div className="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 mb-8">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Mognadsrapport
+              {t.maturityReport}
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Digital mognadsbedömning för ledningsgruppen
+              {t.reportDescription}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <div className="text-center">
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Projekt</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{t.project}</p>
               <p className="font-semibold text-slate-900 dark:text-white">{project.name}</p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Kund</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{t.client}</p>
               <p className="font-semibold text-slate-900 dark:text-white">{project.clientName}</p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Antal svar</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{t.responseCount}</p>
               <p className="font-semibold text-slate-900 dark:text-white">{completedSessions.length}</p>
             </div>
           </div>
@@ -242,7 +261,7 @@ export default function ProjectReportPage() {
           {project.deadline && (
             <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-4">
               <Calendar className="w-4 h-4 inline mr-1" />
-              Insamlingsperiod avslutad: {formatDate(project.deadline)}
+              {collectionEnded}
             </p>
           )}
         </div>
@@ -256,9 +275,9 @@ export default function ProjectReportPage() {
             className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8"
           >
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
-              Övergripande mognadsnivå
+              {t.overallMaturityLevel}
             </h2>
-            <MaturityGauge score={aggregatedScores.overallScore} locale="sv" />
+            <MaturityGauge score={aggregatedScores.overallScore} locale={locale} />
           </motion.div>
 
           <motion.div
@@ -268,10 +287,10 @@ export default function ProjectReportPage() {
             className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8"
           >
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
-              Dimensionsanalys
+              {t.dimensionAnalysis}
             </h2>
             <div className="flex justify-center">
-              <RadarChart scores={aggregatedScores.dimensionScores} locale="sv" />
+              <RadarChart scores={aggregatedScores.dimensionScores} locale={locale} />
             </div>
           </motion.div>
         </div>
@@ -284,12 +303,12 @@ export default function ProjectReportPage() {
           className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8 mb-8"
         >
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
-            Mognadsresan
+            {t.maturityJourney}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 text-center mb-4 text-sm">
-            &quot;En digital strategi blir bara så bra som den förankring den får i ledningen&quot;
+            {quote}
           </p>
-          <MaturitySteps currentLevel={maturityLevel} locale="sv" />
+          <MaturitySteps currentLevel={maturityLevel} locale={locale} />
         </motion.div>
 
         {/* Dimension details */}
@@ -300,9 +319,9 @@ export default function ProjectReportPage() {
           className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8 mb-8"
         >
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-            Dimensioner i detalj
+            {t.dimensionsInDetail}
           </h2>
-          <DimensionBars scores={aggregatedScores.dimensionScores} locale="sv" />
+          <DimensionBars scores={aggregatedScores.dimensionScores} locale={locale} />
         </motion.div>
 
         {/* AI Insights */}
@@ -315,14 +334,14 @@ export default function ProjectReportPage() {
           <AIInsightsCard
             insights={aiInsights}
             isLoading={isLoadingInsights}
-            locale="sv"
+            locale={locale}
           />
         </motion.div>
 
         {/* Footer */}
         <div className="text-center text-sm text-slate-400 dark:text-slate-500 py-4 border-t border-slate-200 dark:border-slate-700">
-          <p>Genererad av Mognadsmätaren - Curago</p>
-          <p>{new Date().toLocaleDateString('sv-SE')}</p>
+          <p>{t.generatedBy}</p>
+          <p>{new Date().toLocaleDateString(locale === 'sv' ? 'sv-SE' : 'en-US')}</p>
         </div>
       </div>
     </>

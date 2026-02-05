@@ -8,14 +8,17 @@ import { Assessment } from '@/components/assessment/Assessment';
 import { ResultsDashboard } from '@/components/results/ResultsDashboard';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { useAssessmentStore, useResultsStore } from '@/lib/store';
+import { getTranslations } from '@/lib/translations';
 
 type View = 'landing' | 'assessment' | 'results';
 
 export default function Home() {
   const [view, setView] = useState<View>('landing');
   const [mounted, setMounted] = useState(false);
+  const locale = useAssessmentStore((state) => state.locale);
   const resetAssessment = useAssessmentStore((state) => state.reset);
   const resetResults = useResultsStore((state) => state.reset);
+  const tCommon = getTranslations('common', locale);
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function Home() {
   if (!mounted) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Laddar...</div>
+        <div className="animate-pulse text-muted-foreground">{tCommon.loading}</div>
       </div>
     );
   }
@@ -54,7 +57,7 @@ export default function Home() {
         className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <LogIn className="w-4 h-4" />
-        Konsult
+        {tCommon.consultant}
       </Link>
 
       {/* Language switcher */}
