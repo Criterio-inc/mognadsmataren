@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { LogIn } from 'lucide-react';
+import { LogIn, Home as HomeIcon } from 'lucide-react';
 import { LandingPage } from '@/components/landing/LandingPage';
 import { Assessment } from '@/components/assessment/Assessment';
 import { ResultsDashboard } from '@/components/results/ResultsDashboard';
@@ -51,14 +51,24 @@ export default function Home() {
 
   return (
     <main className="relative">
-      {/* Login link for consultants */}
-      <Link
-        href="/login"
-        className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <LogIn className="w-4 h-4" />
-        {tCommon.consultant}
-      </Link>
+      {/* Top left link - shows Home during assessment, Consultant link otherwise */}
+      {view === 'assessment' || view === 'results' ? (
+        <button
+          onClick={handleReset}
+          className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <HomeIcon className="w-4 h-4" />
+          {locale === 'sv' ? 'Startsida' : 'Home'}
+        </button>
+      ) : (
+        <Link
+          href="/login"
+          className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <LogIn className="w-4 h-4" />
+          {tCommon.consultant}
+        </Link>
+      )}
 
       {/* Language switcher */}
       <div className="fixed top-4 right-4 z-50">
