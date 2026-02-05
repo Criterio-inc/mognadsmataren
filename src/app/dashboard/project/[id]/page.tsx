@@ -16,6 +16,8 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { formatDate, isDeadlinePassed } from '@/lib/utils';
+import { useAssessmentStore } from '@/lib/store';
+import { getTranslations } from '@/lib/translations';
 
 interface Session {
   id: string;
@@ -63,15 +65,22 @@ interface ProjectData {
   aggregatedScores: AggregatedScores | null;
 }
 
-const dimensionLabels = {
-  gemesamBild: 'Gemensam Bild',
-  strategiskKoppling: 'Strategisk Koppling',
-  prioriteringBeslut: 'Prioritering & Beslut',
-  agarskapGenomforande: 'Ägarskap & Genomförande',
-};
-
 export default function ProjectDetailPage() {
   const params = useParams();
+  const locale = useAssessmentStore((state) => state.locale);
+  const t = getTranslations('projectDetail', locale);
+  const tStatus = getTranslations('status', locale);
+  const tDimensions = getTranslations('dimensions', locale);
+  const tDashboard = getTranslations('dashboard', locale);
+  const tCommon = getTranslations('common', locale);
+
+  const dimensionLabels = {
+    gemesamBild: tDimensions.gemesamBild,
+    strategiskKoppling: tDimensions.strategiskKoppling,
+    prioriteringBeslut: tDimensions.prioriteringBeslut,
+    agarskapGenomforande: tDimensions.agarskapGenomforande,
+  };
+
   const [data, setData] = useState<ProjectData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -113,10 +122,13 @@ export default function ProjectDetailPage() {
     setShowSettings(false);
   }
 
+  const projectNotFound = locale === 'sv' ? 'Projektet kunde inte hittas' : 'Project not found';
+  const backToDashboard = locale === 'sv' ? 'Tillbaka till dashboard' : 'Back to dashboard';
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-pulse text-slate-400">Laddar projekt...</div>
+        <div className="animate-pulse text-slate-400">{tDashboard.loadingProjects}</div>
       </div>
     );
   }
@@ -124,9 +136,9 @@ export default function ProjectDetailPage() {
   if (!data) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-500">Projektet kunde inte hittas</p>
+        <p className="text-slate-500">{projectNotFound}</p>
         <Link href="/dashboard" className="text-blue-600 hover:underline mt-2 inline-block">
-          Tillbaka till dashboard
+          {backToDashboard}
         </Link>
       </div>
     );
@@ -136,6 +148,11 @@ export default function ProjectDetailPage() {
   const completedSessions = sessions.filter((s) => s.completedAt);
   const pendingSessions = sessions.filter((s) => !s.completedAt);
 
+  // Translate share link description with client name
+  const shareLinkDescription = locale === 'sv'
+    ? `Skicka denna länk till ${project.clientName}s ledningsgrupp för att samla in svar`
+    : `Send this link to ${project.clientName}'s leadership team to collect responses`;
+
   return (
     <div>
       <Link
@@ -143,7 +160,7 @@ export default function ProjectDetailPage() {
         className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
-        Tillbaka till projekt
+        {t.backToProjects}
       </Link>
 
       {/* Header */}
@@ -162,7 +179,7 @@ export default function ProjectDetailPage() {
                   : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300'
               }`}
             >
-              {project.status === 'active' ? 'Aktiv' : project.status === 'closed' ? 'Stängd' : 'Utkast'}
+              {project.status === 'active' ? tStatus.active : project.status === 'closed' ? tStatus.closed : tStatus.draft}
             </span>
           </div>
           <p className="text-slate-500 dark:text-slate-400">
@@ -177,7 +194,7 @@ export default function ProjectDetailPage() {
               }`}
             >
               <Calendar className="w-4 h-4 inline mr-1" />
-              {isDeadlinePassed(project.deadline) ? 'Stängdes ' : 'Stänger '}
+              {isDeadlinePassed(project.deadline) ? tDashboard.closedOn : tDashboard.closesOn}{' '}
               {formatDate(project.deadline)}
             </p>
           )}
@@ -190,7 +207,7 @@ export default function ProjectDetailPage() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
             >
               <BarChart3 className="w-4 h-4" />
-              Visa rapport
+              {t.viewReport}
             </Link>
           )}
           <div className="relative">
@@ -207,14 +224,14 @@ export default function ProjectDetailPage() {
                     onClick={() => updateStatus('closed')}
                     className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
-                    Stäng enkäten
+                    {t.closeSurvey}
                   </button>
                 ) : (
                   <button
                     onClick={() => updateStatus('active')}
                     className="w-full px-4 py-2 text-left text-sm text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
                   >
-                    Öppna enkäten igen
+                    {t.reopenSurvey}
                   </button>
                 )}
               </div>
@@ -226,10 +243,10 @@ export default function ProjectDetailPage() {
       {/* Share link */}
       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 mb-8">
         <h2 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-          Delningslänk
+          {t.shareLink}
         </h2>
         <p className="text-sm text-blue-700 dark:text-blue-300 mb-4">
-          Skicka denna länk till {project.clientName}s ledningsgrupp för att samla in svar
+          {shareLinkDescription}
         </p>
         <div className="flex items-center gap-2">
           <input
@@ -245,12 +262,12 @@ export default function ProjectDetailPage() {
             {copied ? (
               <>
                 <CheckCircle className="w-4 h-4" />
-                Kopierad!
+                {tCommon.copied}
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                Kopiera
+                {tCommon.copy}
               </>
             )}
           </button>
@@ -268,7 +285,7 @@ export default function ProjectDetailPage() {
               <p className="text-2xl font-bold text-slate-900 dark:text-white">
                 {completedSessions.length}
               </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Slutförda svar</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{t.completedResponses}</p>
             </div>
           </div>
         </div>
@@ -281,7 +298,7 @@ export default function ProjectDetailPage() {
               <p className="text-2xl font-bold text-slate-900 dark:text-white">
                 {pendingSessions.length}
               </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Pågående</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{t.ongoing}</p>
             </div>
           </div>
         </div>
@@ -294,7 +311,7 @@ export default function ProjectDetailPage() {
               <p className="text-2xl font-bold text-slate-900 dark:text-white">
                 {aggregatedScores ? aggregatedScores.overallScore.toFixed(1) : '-'}
               </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Genomsnitt</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{t.average}</p>
             </div>
           </div>
         </div>
@@ -304,7 +321,7 @@ export default function ProjectDetailPage() {
       {aggregatedScores && (
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-            Aggregerade resultat
+            {t.aggregatedResults}
           </h2>
           <div className="space-y-4">
             {Object.entries(aggregatedScores.dimensionScores).map(([key, value]) => (
@@ -333,14 +350,14 @@ export default function ProjectDetailPage() {
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Respondenter ({sessions.length})
+            {t.respondents} ({sessions.length})
           </h2>
         </div>
         {sessions.length === 0 ? (
           <div className="text-center py-12">
             <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
             <p className="text-slate-500 dark:text-slate-400">
-              Inga svar ännu. Dela länken för att börja samla in svar.
+              {t.noResponsesYet}
             </p>
           </div>
         ) : (
@@ -349,13 +366,13 @@ export default function ProjectDetailPage() {
               <thead className="bg-slate-50 dark:bg-slate-900/50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    Respondent
+                    {t.respondent}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    Status
+                    {tStatus.inProgress.split(' ')[0] === 'In' ? 'Status' : 'Status'}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    Datum
+                    {t.date}
                   </th>
                 </tr>
               </thead>
@@ -365,7 +382,7 @@ export default function ProjectDetailPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
                         <p className="text-sm font-medium text-slate-900 dark:text-white">
-                          {session.respondentName || 'Anonym'}
+                          {session.respondentName || t.anonymous}
                         </p>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
                           {session.respondentEmail}
@@ -376,12 +393,12 @@ export default function ProjectDetailPage() {
                       {session.completedAt ? (
                         <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full">
                           <Check className="w-3 h-3" />
-                          Slutförd
+                          {tStatus.completed}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 rounded-full">
                           <Clock className="w-3 h-3" />
-                          Pågående
+                          {tStatus.inProgress}
                         </span>
                       )}
                     </td>
