@@ -39,7 +39,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero section */}
-      <div className="max-w-6xl mx-auto px-4 pt-12 pb-24">
+      <div className="max-w-6xl mx-auto px-4 pt-4 pb-24">
         {/* Orange icon logo at top */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
