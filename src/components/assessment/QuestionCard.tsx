@@ -58,7 +58,7 @@ export function QuestionCard({
     >
       {/* Dimension badge */}
       <div className="mb-4">
-        <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+        <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200">
           {dimension?.[locale].name}
         </span>
       </div>
@@ -83,15 +83,15 @@ export function QuestionCard({
             onClick={() => handleSelect(value)}
             className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
               currentValue === value
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600'
+                ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/30'
+                : 'border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-600'
             }`}
           >
             <div className="flex items-center gap-4">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                   currentValue === value
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-teal-500 text-white'
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                 }`}
               >
@@ -100,7 +100,7 @@ export function QuestionCard({
               <span
                 className={`text-sm md:text-base ${
                   currentValue === value
-                    ? 'text-blue-700 dark:text-blue-300 font-medium'
+                    ? 'text-teal-700 dark:text-teal-300 font-medium'
                     : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -131,7 +131,7 @@ export function QuestionCard({
           className={`px-6 py-3 rounded-lg font-medium transition-all ${
             currentValue === undefined
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-teal-600 text-white hover:bg-teal-700'
           }`}
         >
           {isLast

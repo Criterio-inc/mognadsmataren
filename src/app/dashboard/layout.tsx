@@ -25,7 +25,7 @@ export default async function DashboardLayout({
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <Link href="/dashboard" className="text-lg font-bold" style={{ color: '#1a5f5a' }}>
-                Digital mognadsmätare
+                AI-Mognadsmätaren
               </Link>
               <nav className="hidden md:flex items-center gap-6">
                 <Link

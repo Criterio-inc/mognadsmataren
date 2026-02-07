@@ -27,10 +27,14 @@ interface Session {
   createdAt: string;
   result: {
     dimensionScores: {
-      gemesamBild: number;
-      strategiskKoppling: number;
-      prioriteringBeslut: number;
-      agarskapGenomforande: number;
+      strategiLedarskap: number;
+      anvandsfall: number;
+      dataInfrastruktur: number;
+      kompetensKultur: number;
+      styrningEtik: number;
+      teknikArkitektur: number;
+      organisationProcesser: number;
+      ekosystemInnovation: number;
     };
     overallScore: number;
     maturityLevel: number;
@@ -50,10 +54,14 @@ interface Project {
 
 interface AggregatedScores {
   dimensionScores: {
-    gemesamBild: number;
-    strategiskKoppling: number;
-    prioriteringBeslut: number;
-    agarskapGenomforande: number;
+    strategiLedarskap: number;
+    anvandsfall: number;
+    dataInfrastruktur: number;
+    kompetensKultur: number;
+    styrningEtik: number;
+    teknikArkitektur: number;
+    organisationProcesser: number;
+    ekosystemInnovation: number;
   };
   overallScore: number;
   responseCount: number;
@@ -75,10 +83,14 @@ export default function ProjectDetailPage() {
   const tCommon = getTranslations('common', locale);
 
   const dimensionLabels = {
-    gemesamBild: tDimensions.gemesamBild,
-    strategiskKoppling: tDimensions.strategiskKoppling,
-    prioriteringBeslut: tDimensions.prioriteringBeslut,
-    agarskapGenomforande: tDimensions.agarskapGenomforande,
+    strategiLedarskap: tDimensions.strategiLedarskap,
+    anvandsfall: tDimensions.anvandsfall,
+    dataInfrastruktur: tDimensions.dataInfrastruktur,
+    kompetensKultur: tDimensions.kompetensKultur,
+    styrningEtik: tDimensions.styrningEtik,
+    teknikArkitektur: tDimensions.teknikArkitektur,
+    organisationProcesser: tDimensions.organisationProcesser,
+    ekosystemInnovation: tDimensions.ekosystemInnovation,
   };
 
   const [data, setData] = useState<ProjectData | null>(null);
@@ -137,7 +149,7 @@ export default function ProjectDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-slate-500">{projectNotFound}</p>
-        <Link href="/dashboard" className="text-blue-600 hover:underline mt-2 inline-block">
+        <Link href="/dashboard" className="text-teal-600 hover:underline mt-2 inline-block">
           {backToDashboard}
         </Link>
       </div>
@@ -241,11 +253,11 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Share link */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 mb-8">
-        <h2 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+      <div className="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-xl p-6 mb-8">
+        <h2 className="font-semibold text-teal-900 dark:text-teal-100 mb-2">
           {t.shareLink}
         </h2>
-        <p className="text-sm text-blue-700 dark:text-blue-300 mb-4">
+        <p className="text-sm text-teal-700 dark:text-teal-300 mb-4">
           {shareLinkDescription}
         </p>
         <div className="flex items-center gap-2">
@@ -253,11 +265,11 @@ export default function ProjectDetailPage() {
             type="text"
             readOnly
             value={getShareUrl()}
-            className="flex-1 px-4 py-2 bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-700 rounded-lg text-sm text-slate-700 dark:text-slate-300"
+            className="flex-1 px-4 py-2 bg-white dark:bg-slate-900 border border-teal-200 dark:border-teal-700 rounded-lg text-sm text-slate-700 dark:text-slate-300"
           />
           <button
             onClick={copyShareLink}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
           >
             {copied ? (
               <>
@@ -304,8 +316,8 @@ export default function ProjectDetailPage() {
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-              <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center">
+              <Users className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -336,7 +348,7 @@ export default function ProjectDetailPage() {
                 </div>
                 <div className="h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-teal-500 to-emerald-600 rounded-full transition-all duration-500"
                     style={{ width: `${(value / 5) * 100}%` }}
                   />
                 </div>

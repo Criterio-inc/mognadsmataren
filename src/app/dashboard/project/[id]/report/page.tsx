@@ -138,7 +138,7 @@ export default function ProjectReportPage() {
     return (
       <div className="text-center py-12">
         <p className="text-slate-500">{projectNotFound}</p>
-        <Link href="/dashboard" className="text-blue-600 hover:underline mt-2 inline-block">
+        <Link href="/dashboard" className="text-teal-600 hover:underline mt-2 inline-block">
           {backToDashboard}
         </Link>
       </div>
@@ -176,8 +176,8 @@ export default function ProjectReportPage() {
 
   // Quote translation
   const quote = locale === 'sv'
-    ? '"En digital strategi blir bara så bra som den förankring den får i ledningen"'
-    : '"A digital strategy is only as good as the buy-in it gets from leadership"';
+    ? '"AI-mognad är inte en teknikfråga – det är en ledningsfråga"'
+    : '"AI maturity is not a technology question – it\'s a leadership question"';
 
   // Collection ended translation
   const collectionEnded = locale === 'sv'
@@ -223,7 +223,7 @@ export default function ProjectReportPage() {
 
           <button
             onClick={handleExportPDF}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
           >
             <Download className="w-4 h-4" />
             {t.exportPdf}
@@ -233,7 +233,7 @@ export default function ProjectReportPage() {
 
       <div id="report-content" ref={reportRef}>
         {/* Report Header */}
-        <div className="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 mb-8">
+        <div className="bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 mb-8">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {t.maturityReport}

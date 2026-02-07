@@ -31,12 +31,11 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
     '#ef4444', // Level 1 - Red
     '#f97316', // Level 2 - Orange
     '#eab308', // Level 3 - Yellow
-    '#3b82f6', // Level 4 - Blue
-    '#1d4ed8', // Level 5 - Dark Blue
+    '#14b8a6', // Level 4 - Teal
+    '#0d9488', // Level 5 - Dark Teal
   ];
 
   // Gauge geometry - arc curves UPWARD (from left to right over the top)
-  // Using angles from 180° to 360° (going through 270° which is "up" in SVG)
   const cx = 100;
   const cy = 100;
   const outerRadius = 70;
@@ -54,7 +53,6 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
         >
           {/* Arc segments - going from 180° to 360° (left to right, curving up) */}
           {[0, 1, 2, 3, 4].map((i) => {
-            // Each segment is 36° wide
             const startAngle = 180 + (i * 36);
             const endAngle = 180 + ((i + 1) * 36);
             const startRad = (startAngle * Math.PI) / 180;
@@ -80,9 +78,8 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
             );
           })}
 
-          {/* Level labels - positioned along the outer edge */}
+          {/* Level labels */}
           {[1, 2, 3, 4, 5].map((level, i) => {
-            // Label in the middle of each segment
             const angle = 180 + (i * 36) + 18;
             const rad = (angle * Math.PI) / 180;
             const x = cx + labelRadius * Math.cos(rad);
@@ -102,7 +99,7 @@ export function MaturityGauge({ score, locale }: MaturityGaugeProps) {
             );
           })}
 
-          {/* Center decoration (needle pivot point) */}
+          {/* Center decoration */}
           <circle cx={cx} cy={cy} r="10" fill="currentColor" className="text-gray-800 dark:text-gray-200" />
           <circle cx={cx} cy={cy} r="6" fill="currentColor" className="text-gray-100 dark:text-gray-700" />
         </svg>

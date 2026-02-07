@@ -131,7 +131,7 @@ export default function DashboardPage() {
           </button>
           <Link
             href="/dashboard/new"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
             {t.newProject}
@@ -153,7 +153,7 @@ export default function DashboardPage() {
           </p>
           <Link
             href="/dashboard/new"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
             {t.createProject}
@@ -170,7 +170,7 @@ export default function DashboardPage() {
                 <div>
                   <Link
                     href={`/dashboard/project/${project.id}`}
-                    className="font-semibold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                    className="font-semibold text-slate-900 dark:text-white hover:text-teal-600 dark:hover:text-teal-400"
                   >
                     {project.name}
                   </Link>
@@ -217,7 +217,7 @@ export default function DashboardPage() {
                 </button>
                 <Link
                   href={`/dashboard/project/${project.id}`}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors"
                 >
                   {t.viewResults}
                 </Link>

@@ -49,17 +49,17 @@ export function Assessment({ onComplete }: AssessmentProps) {
   }, [currentQuestionIndex, setCurrentQuestionIndex]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pt-4 pb-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-900 dark:to-teal-900/20 pt-4 pb-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {locale === 'sv' ? 'Digital Mognadsmätning' : 'Digital Maturity Assessment'}
+            {locale === 'sv' ? 'AI-Mognadsmätning' : 'AI Maturity Assessment'}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             {locale === 'sv'
-              ? 'Svara på frågorna för att bedöma er digitala mognad'
-              : 'Answer the questions to assess your digital maturity'}
+              ? 'Svara på frågorna för att bedöma er AI-mognad'
+              : 'Answer the questions to assess your AI maturity'}
           </p>
         </div>
 
@@ -86,8 +86,8 @@ export function Assessment({ onComplete }: AssessmentProps) {
         <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           <p>
             {locale === 'sv'
-              ? '💡 Tips: Svara ärligt – det finns inga rätt eller fel svar'
-              : '💡 Tip: Answer honestly – there are no right or wrong answers'}
+              ? '💡 Tips: Svara utifrån hur det faktiskt ser ut idag, inte hur ni vill att det ska vara'
+              : '💡 Tip: Answer based on how things actually are today, not how you want them to be'}
           </p>
         </div>
       </div>

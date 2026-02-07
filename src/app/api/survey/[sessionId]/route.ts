@@ -9,10 +9,14 @@ type Params = Promise<{ sessionId: string }>;
 // Calculate dimension scores from responses
 function calculateScores(responsesMap: Record<number, number>) {
   const dimensions = {
-    gemesamBild: [1, 2, 3, 4, 5, 6],
-    strategiskKoppling: [7, 8, 9, 10, 11],
-    prioriteringBeslut: [12, 13, 14, 15, 16],
-    agarskapGenomforande: [17, 18, 19, 20, 21, 22],
+    strategiLedarskap: [1, 2, 3, 4],
+    anvandsfall: [5, 6, 7, 8],
+    dataInfrastruktur: [9, 10, 11, 12],
+    kompetensKultur: [13, 14, 15, 16],
+    styrningEtik: [17, 18, 19, 20],
+    teknikArkitektur: [21, 22, 23, 24],
+    organisationProcesser: [25, 26, 27, 28],
+    ekosystemInnovation: [29, 30, 31, 32],
   };
 
   const dimensionScores: Record<string, number> = {};
@@ -31,10 +35,10 @@ function calculateScores(responsesMap: Record<number, number>) {
 
   // Map to maturity level (1-5)
   let maturityLevel = 1;
-  if (overallScore >= 4.5) maturityLevel = 5;
+  if (overallScore >= 4.3) maturityLevel = 5;
   else if (overallScore >= 3.5) maturityLevel = 4;
-  else if (overallScore >= 2.5) maturityLevel = 3;
-  else if (overallScore >= 1.5) maturityLevel = 2;
+  else if (overallScore >= 2.7) maturityLevel = 3;
+  else if (overallScore >= 1.9) maturityLevel = 2;
 
   return { dimensionScores, overallScore, maturityLevel };
 }
@@ -127,10 +131,10 @@ export async function POST(req: NextRequest, { params }: { params: Params }) {
     .from(responses)
     .where(eq(responses.sessionId, sessionId));
 
-  // Check if all 22 questions are answered
-  if (sessionResponses.length < 22) {
+  // Check if all 32 questions are answered
+  if (sessionResponses.length < 32) {
     return NextResponse.json(
-      { error: `Please answer all questions (${sessionResponses.length}/22 completed)` },
+      { error: `Please answer all questions (${sessionResponses.length}/32 completed)` },
       { status: 400 }
     );
   }
@@ -147,10 +151,14 @@ export async function POST(req: NextRequest, { params }: { params: Params }) {
   await db.insert(assessmentResults).values({
     sessionId,
     dimensionScores: dimensionScores as {
-      gemesamBild: number;
-      strategiskKoppling: number;
-      prioriteringBeslut: number;
-      agarskapGenomforande: number;
+      strategiLedarskap: number;
+      anvandsfall: number;
+      dataInfrastruktur: number;
+      kompetensKultur: number;
+      styrningEtik: number;
+      teknikArkitektur: number;
+      organisationProcesser: number;
+      ekosystemInnovation: number;
     },
     overallScore: Math.round(overallScore * 10) / 10,
     maturityLevel,

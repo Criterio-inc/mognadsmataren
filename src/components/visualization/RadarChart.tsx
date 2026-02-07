@@ -86,8 +86,8 @@ export function RadarChart({ scores, locale, size = 300 }: RadarChartProps) {
         {/* Data polygon */}
         <motion.path
           d={dataPath}
-          fill="rgba(59, 130, 246, 0.3)"
-          stroke="#3b82f6"
+          fill="rgba(20, 184, 166, 0.3)"
+          stroke="#14b8a6"
           strokeWidth="2"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -101,7 +101,7 @@ export function RadarChart({ scores, locale, size = 300 }: RadarChartProps) {
             cx={point.x}
             cy={point.y}
             r="6"
-            fill="#3b82f6"
+            fill="#14b8a6"
             stroke="white"
             strokeWidth="2"
             initial={{ opacity: 0, scale: 0 }}

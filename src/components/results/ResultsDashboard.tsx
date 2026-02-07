@@ -61,7 +61,7 @@ export function ResultsDashboard({ onReset }: ResultsDashboardProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pt-4 pb-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-900 dark:to-teal-900/20 pt-4 pb-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -70,12 +70,12 @@ export function ResultsDashboard({ onReset }: ResultsDashboardProps) {
           className="text-center mb-12"
         >
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            {locale === 'sv' ? 'Ert resultat' : 'Your results'}
+            {locale === 'sv' ? 'Ert AI-mognadsresultat' : 'Your AI maturity results'}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             {locale === 'sv'
-              ? 'Digital mognadsbedömning för ledningsgruppen'
-              : 'Digital maturity assessment for the leadership team'}
+              ? 'AI-mognadsbedömning baserad på 8 strategiska dimensioner'
+              : 'AI maturity assessment based on 8 strategic dimensions'}
           </p>
         </motion.div>
 
@@ -89,7 +89,7 @@ export function ResultsDashboard({ onReset }: ResultsDashboardProps) {
             className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8"
           >
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
-              {locale === 'sv' ? 'Övergripande mognadsnivå' : 'Overall maturity level'}
+              {locale === 'sv' ? 'Övergripande AI-mognadsnivå' : 'Overall AI maturity level'}
             </h2>
             <MaturityGauge score={overallScore} locale={locale} />
           </motion.div>
@@ -118,12 +118,12 @@ export function ResultsDashboard({ onReset }: ResultsDashboardProps) {
           className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8 mb-12"
         >
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
-            {locale === 'sv' ? 'Mognadsresan' : 'Maturity journey'}
+            {locale === 'sv' ? 'AI-mognadsresan' : 'AI maturity journey'}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 text-center mb-4 text-sm">
             {locale === 'sv'
-              ? '"En digital strategi blir bara så bra som den förankring den får i ledningen"'
-              : '"A digital strategy is only as good as the buy-in it gets from leadership"'}
+              ? '"AI-mognad är inte en teknikfråga – det är en ledningsfråga"'
+              : '"AI maturity is not a technology question – it\'s a leadership question"'}
           </p>
           <MaturitySteps currentLevel={maturityLevel} locale={locale} />
         </motion.div>
@@ -171,9 +171,8 @@ export function ResultsDashboard({ onReset }: ResultsDashboardProps) {
           </button>
 
           <button
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
             onClick={() => {
-              // TODO: Implement PDF export
               alert(locale === 'sv' ? 'PDF-export kommer snart!' : 'PDF export coming soon!');
             }}
           >
@@ -184,7 +183,6 @@ export function ResultsDashboard({ onReset }: ResultsDashboardProps) {
           <button
             className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             onClick={() => {
-              // TODO: Implement sharing
               alert(locale === 'sv' ? 'Delningsfunktion kommer snart!' : 'Sharing coming soon!');
             }}
           >

@@ -9,7 +9,7 @@ export const projectStatusEnum = pgEnum('project_status', ['draft', 'active', 'c
 // Note: createdById references Supabase Auth user ID (UUID)
 export const projects = pgTable('projects', {
   id: uuid('id').defaultRandom().primaryKey(),
-  name: text('name').notNull(), // "Volvo Ledningsgrupp Q1 2025"
+  name: text('name').notNull(), // "AI-Mognadsmätning Q1 2025"
   clientName: text('client_name').notNull(), // "Volvo"
   clientDomain: text('client_domain').notNull(), // "volvo.se" - for email validation
   shareCode: text('share_code').notNull().unique(), // Short unique code for URL
@@ -34,7 +34,7 @@ export const assessmentSessions = pgTable('assessment_sessions', {
 export const responses = pgTable('responses', {
   id: uuid('id').defaultRandom().primaryKey(),
   sessionId: uuid('session_id').notNull().references(() => assessmentSessions.id, { onDelete: 'cascade' }),
-  questionId: integer('question_id').notNull(), // Maps to question number 1-22
+  questionId: integer('question_id').notNull(), // Maps to question number 1-32
   value: integer('value').notNull(), // 1-5 scale
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
@@ -46,10 +46,14 @@ export const assessmentResults = pgTable('assessment_results', {
 
   // Dimension scores (averages)
   dimensionScores: jsonb('dimension_scores').notNull().$type<{
-    gemesamBild: number;      // Q1-6
-    strategiskKoppling: number; // Q7-11
-    prioriteringBeslut: number; // Q12-16
-    agarskapGenomforande: number; // Q17-22
+    strategiLedarskap: number;       // Q1-4
+    anvandsfall: number;             // Q5-8
+    dataInfrastruktur: number;       // Q9-12
+    kompetensKultur: number;         // Q13-16
+    styrningEtik: number;            // Q17-20
+    teknikArkitektur: number;        // Q21-24
+    organisationProcesser: number;   // Q25-28
+    ekosystemInnovation: number;     // Q29-32
   }>(),
 
   // Overall maturity level (1-5)

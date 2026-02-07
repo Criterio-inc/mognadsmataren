@@ -7,7 +7,7 @@ import { dimensions } from '@/lib/questions';
 export function ProgressBar() {
   const { responses, locale } = useAssessmentStore();
   const answeredCount = Object.keys(responses).length;
-  const progress = (answeredCount / 22) * 100;
+  const progress = (answeredCount / 32) * 100;
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">
@@ -17,11 +17,11 @@ export function ProgressBar() {
           <span>
             {locale === 'sv' ? 'Framsteg' : 'Progress'}
           </span>
-          <span>{answeredCount}/22</span>
+          <span>{answeredCount}/32</span>
         </div>
         <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-blue-500 to-blue-600"
+            className="h-full bg-gradient-to-r from-teal-500 to-teal-600"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3 }}
@@ -30,7 +30,7 @@ export function ProgressBar() {
       </div>
 
       {/* Dimension progress indicators */}
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         {dimensions.map((dim) => {
           const answeredInDim = dim.questionIds.filter(
             (id) => responses[id] !== undefined
@@ -49,12 +49,12 @@ export function ProgressBar() {
                   isComplete
                     ? 'bg-green-500'
                     : dimProgress > 0
-                      ? 'bg-blue-400'
+                      ? 'bg-teal-400'
                       : 'bg-gray-300 dark:bg-gray-600'
                 }`}
                 style={{
                   background: !isComplete && dimProgress > 0
-                    ? `linear-gradient(to right, #3b82f6 ${dimProgress}%, #d1d5db ${dimProgress}%)`
+                    ? `linear-gradient(to right, #14b8a6 ${dimProgress}%, #d1d5db ${dimProgress}%)`
                     : undefined,
                 }}
               />

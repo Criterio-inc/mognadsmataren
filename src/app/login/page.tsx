@@ -50,7 +50,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ export default function LoginPage() {
         <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl p-8 shadow-xl">
           <div className="flex justify-center mb-8">
             <span className="text-2xl font-bold" style={{ color: '#1a5f5a' }}>
-              Digital mognadsmätare
+              AI-Mognadsmätaren
             </span>
           </div>
 
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 placeholder="din.email@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
               />
             </div>
 
@@ -118,7 +118,7 @@ export default function LoginPage() {
                   placeholder="Minst 6 tecken"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-12 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
+                  className="w-full px-4 py-3 pr-12 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
                 />
                 <button
                   type="button"
@@ -135,7 +135,7 @@ export default function LoginPage() {
               disabled={isLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
             >
               {isLoading ? (
                 <>
@@ -159,7 +159,7 @@ export default function LoginPage() {
                 setError(null);
                 setSuccess(null);
               }}
-              className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+              className="text-teal-600 dark:text-teal-400 hover:underline font-medium"
             >
               {isLogin ? 'Skapa konto' : 'Logga in'}
             </button>
@@ -168,7 +168,7 @@ export default function LoginPage() {
         </div>
 
         <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
-          <a href="/" className="hover:text-blue-600 transition-colors">
+          <a href="/" className="hover:text-teal-600 transition-colors">
             ← Tillbaka till startsidan
           </a>
         </p>

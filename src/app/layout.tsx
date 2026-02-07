@@ -9,21 +9,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Digital mognadsmätare | Critero",
-  description: "Mät er ledningsgrupps digitala mognad med 22 påståenden inom 4 strategiska dimensioner. Få AI-genererade insikter och rekommendationer.",
-  keywords: ["digital mognad", "ledningsgrupp", "digitalisering", "självskattning", "digital maturity", "Critero"],
+  title: "AI-Mognadsmätaren | Critero",
+  description: "Mät er organisations AI-mognad med 32 påståenden inom 8 strategiska dimensioner. Få AI-genererade insikter och rekommendationer anpassade till EU AI Act.",
+  keywords: ["AI-mognad", "AI maturity", "AI-strategi", "EU AI Act", "AI-bedömning", "Critero"],
   authors: [{ name: "Critero AB" }],
   openGraph: {
-    title: "Digital mognadsmätare | Critero",
-    description: "Mät er ledningsgrupps digitala mognad med 22 påståenden inom 4 strategiska dimensioner",
+    title: "AI-Mognadsmätaren | Critero",
+    description: "Mät er organisations AI-mognad med 32 påståenden inom 8 strategiska dimensioner",
     type: "website",
-    siteName: "Digital mognadsmätare",
+    siteName: "AI-Mognadsmätaren",
     locale: "sv_SE",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital mognadsmätare | Critero",
-    description: "Mät er ledningsgrupps digitala mognad med 22 påståenden inom 4 strategiska dimensioner",
+    title: "AI-Mognadsmätaren | Critero",
+    description: "Mät er organisations AI-mognad med 32 påståenden inom 8 strategiska dimensioner",
   },
 };
 

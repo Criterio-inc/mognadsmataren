@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'Digital mognadsmätare - Mät er ledningsgrupps digitala mognad';
+export const alt = 'AI-Mognadsmätaren - Mät er organisations AI-mognad';
 export const size = {
   width: 1200,
   height: 630,
@@ -62,7 +62,7 @@ export default async function Image() {
               lineHeight: 1.1,
             }}
           >
-            Digital mognadsmätare
+            AI-Mognadsmätaren
           </div>
           <div
             style={{
@@ -71,7 +71,7 @@ export default async function Image() {
               textAlign: 'center',
             }}
           >
-            Mät er ledningsgrupps digitala mognad
+            Mät er organisations AI-mognad
           </div>
         </div>
 

@@ -156,14 +156,14 @@ export default function SurveyPage() {
   // Header text component
   const HeaderText = ({ className = '' }: { className?: string }) => (
     <span className={`font-bold ${className}`} style={{ color: '#1a5f5a' }}>
-      {locale === 'sv' ? 'Digital mognadsmätare' : 'Digital Maturity Meter'}
+      {locale === 'sv' ? 'AI-Mognadsmätaren' : 'AI Maturity Meter'}
     </span>
   );
 
   // Render different steps
   if (step === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
         <div className="animate-pulse text-slate-400">{t.loadingSurvey}</div>
       </div>
     );
@@ -171,7 +171,7 @@ export default function SurveyPage() {
 
   if (step === 'error') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <LanguageToggle />
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
@@ -186,7 +186,7 @@ export default function SurveyPage() {
 
   if (step === 'closed') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <LanguageToggle />
         <div className="text-center max-w-md">
           <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -209,7 +209,7 @@ export default function SurveyPage() {
 
   if (step === 'completed') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -234,7 +234,7 @@ export default function SurveyPage() {
 
   if (step === 'email') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <LanguageToggle />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -271,7 +271,7 @@ export default function SurveyPage() {
                   placeholder={`${locale === 'sv' ? 'namn' : 'name'}@${project?.clientDomain}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
                 />
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {locale === 'sv'
@@ -290,14 +290,14 @@ export default function SurveyPage() {
                   placeholder={t.namePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-shadow text-slate-900 dark:text-white placeholder:text-slate-400"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
               >
                 {isSubmitting ? t.starting : t.startSurvey}
                 <ArrowRight className="w-5 h-5" />
@@ -315,7 +315,7 @@ export default function SurveyPage() {
 
   // Assessment step
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-emerald-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <LanguageToggle />
       {/* Back to start link */}
       <a
@@ -328,7 +328,7 @@ export default function SurveyPage() {
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
         <motion.div
-          className="h-full bg-gradient-to-r from-blue-600 to-indigo-600"
+          className="h-full bg-gradient-to-r from-teal-600 to-emerald-600"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.3 }}
@@ -346,7 +346,7 @@ export default function SurveyPage() {
 
         {/* Dimension indicator */}
         <div className="mb-6">
-          <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-full">
+          <span className="inline-flex items-center gap-2 px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 text-sm font-medium rounded-full">
             {currentDimension?.[locale].name}
           </span>
         </div>
@@ -373,14 +373,14 @@ export default function SurveyPage() {
                   onClick={() => saveResponse(currentQuestion.id, option.value)}
                   className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                     responses[currentQuestion.id] === option.value
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                      ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20'
                       : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                   }`}
                 >
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                       responses[currentQuestion.id] === option.value
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-teal-600 text-white'
                         : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                     }`}
                   >
@@ -389,7 +389,7 @@ export default function SurveyPage() {
                   <span
                     className={`text-left ${
                       responses[currentQuestion.id] === option.value
-                        ? 'text-blue-700 dark:text-blue-300 font-medium'
+                        ? 'text-teal-700 dark:text-teal-300 font-medium'
                         : 'text-slate-600 dark:text-slate-300'
                     }`}
                   >
@@ -425,7 +425,7 @@ export default function SurveyPage() {
             <button
               onClick={goNext}
               disabled={!responses[currentQuestion?.id]}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {t.next}
               <ArrowRight className="w-5 h-5" />

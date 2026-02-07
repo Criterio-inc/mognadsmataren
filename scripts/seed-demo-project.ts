@@ -29,12 +29,16 @@ const SWEDISH_NAMES = [
   'Helena Lindgren',
 ];
 
-// Question ranges per dimension
-const DIMENSION_QUESTIONS = {
-  gemesamBild: [1, 2, 3, 4, 5, 6], // Q1-6
-  strategiskKoppling: [7, 8, 9, 10, 11], // Q7-11
-  prioriteringBeslut: [12, 13, 14, 15, 16], // Q12-16
-  agarskapGenomforande: [17, 18, 19, 20, 21, 22], // Q17-22
+// Question ranges per dimension (4 questions each, 8 dimensions = 32 questions)
+const DIMENSION_QUESTIONS: Record<string, number[]> = {
+  strategiLedarskap: [1, 2, 3, 4],
+  anvandsfall: [5, 6, 7, 8],
+  dataInfrastruktur: [9, 10, 11, 12],
+  kompetensKultur: [13, 14, 15, 16],
+  styrningEtik: [17, 18, 19, 20],
+  teknikArkitektur: [21, 22, 23, 24],
+  organisationProcesser: [25, 26, 27, 28],
+  ekosystemInnovation: [29, 30, 31, 32],
 };
 
 // Generate a weighted random score (tends toward middle values, realistic for organizations)
@@ -58,7 +62,7 @@ async function seedDemoProject() {
   // 1. Create the project
   const shareCode = nanoid(8);
   const projectData = {
-    name: 'Demo Ledningsgrupp 2025',
+    name: 'Demo AI-Mognadsmätning 2025',
     clientName: 'Demo AB',
     clientDomain: 'demo.se',
     shareCode,
@@ -85,19 +89,17 @@ async function seedDemoProject() {
       projectId: project.id,
       respondentEmail: email,
       respondentName: name,
-      completedAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000), // Random time in last 7 days
+      completedAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000),
     }).returning();
 
-    // Generate responses for all 22 questions
+    // Generate responses for all 32 questions
     const allResponses: { sessionId: string; questionId: number; value: number }[] = [];
-    const dimensionResponses: Record<string, number[]> = {
-      gemesamBild: [],
-      strategiskKoppling: [],
-      prioriteringBeslut: [],
-      agarskapGenomforande: [],
-    };
+    const dimensionResponses: Record<string, number[]> = {};
+    for (const dim of Object.keys(DIMENSION_QUESTIONS)) {
+      dimensionResponses[dim] = [];
+    }
 
-    for (let q = 1; q <= 22; q++) {
+    for (let q = 1; q <= 32; q++) {
       const value = generateRealisticScore();
       allResponses.push({
         sessionId: session.id,
@@ -118,24 +120,30 @@ async function seedDemoProject() {
 
     // Calculate scores
     const dimensionScores = {
-      gemesamBild: calculateDimensionScore(dimensionResponses.gemesamBild),
-      strategiskKoppling: calculateDimensionScore(dimensionResponses.strategiskKoppling),
-      prioriteringBeslut: calculateDimensionScore(dimensionResponses.prioriteringBeslut),
-      agarskapGenomforande: calculateDimensionScore(dimensionResponses.agarskapGenomforande),
+      strategiLedarskap: calculateDimensionScore(dimensionResponses.strategiLedarskap),
+      anvandsfall: calculateDimensionScore(dimensionResponses.anvandsfall),
+      dataInfrastruktur: calculateDimensionScore(dimensionResponses.dataInfrastruktur),
+      kompetensKultur: calculateDimensionScore(dimensionResponses.kompetensKultur),
+      styrningEtik: calculateDimensionScore(dimensionResponses.styrningEtik),
+      teknikArkitektur: calculateDimensionScore(dimensionResponses.teknikArkitektur),
+      organisationProcesser: calculateDimensionScore(dimensionResponses.organisationProcesser),
+      ekosystemInnovation: calculateDimensionScore(dimensionResponses.ekosystemInnovation),
     };
 
-    const overallScore = Number((
-      (dimensionScores.gemesamBild + dimensionScores.strategiskKoppling +
-        dimensionScores.prioriteringBeslut + dimensionScores.agarskapGenomforande) / 4
-    ).toFixed(2));
+    const dimValues = Object.values(dimensionScores);
+    const overallScore = Number((dimValues.reduce((a, b) => a + b, 0) / dimValues.length).toFixed(2));
 
-    const maturityLevel = Math.round(overallScore);
+    let maturityLevel = 1;
+    if (overallScore >= 4.3) maturityLevel = 5;
+    else if (overallScore >= 3.5) maturityLevel = 4;
+    else if (overallScore >= 2.7) maturityLevel = 3;
+    else if (overallScore >= 1.9) maturityLevel = 2;
 
     // Create assessment result
     await db.insert(assessmentResults).values({
       sessionId: session.id,
       dimensionScores,
-      overallScore: Math.round(overallScore * 100) / 100,
+      overallScore: Math.round(overallScore),
       maturityLevel,
     });
 

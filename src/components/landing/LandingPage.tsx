@@ -15,13 +15,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
   const features = [
     {
       icon: BarChart3,
-      sv: { title: '22 påståenden', description: 'Inom 4 strategiska dimensioner' },
-      en: { title: '22 statements', description: 'Across 4 strategic dimensions' },
+      sv: { title: '32 påståenden', description: 'Inom 8 strategiska dimensioner' },
+      en: { title: '32 statements', description: 'Across 8 strategic dimensions' },
     },
     {
       icon: Clock,
-      sv: { title: '10-15 minuter', description: 'Snabb och fokuserad bedömning' },
-      en: { title: '10-15 minutes', description: 'Quick and focused assessment' },
+      sv: { title: '15-20 minuter', description: 'Grundlig men fokuserad bedömning' },
+      en: { title: '15-20 minutes', description: 'Thorough yet focused assessment' },
     },
     {
       icon: Lightbulb,
@@ -61,17 +61,17 @@ export function LandingPage({ onStart }: LandingPageProps) {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            {locale === 'sv' ? 'Mognadsmätaren' : 'Maturity Meter'}
+            {locale === 'sv' ? 'AI-Mognadsmätaren' : 'AI Maturity Meter'}
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-3xl mx-auto">
             {locale === 'sv'
-              ? 'Mät er ledningsgrupps digitala mognad'
-              : 'Measure your leadership team\'s digital maturity'}
+              ? 'Mät er organisations AI-mognad inom 8 strategiska dimensioner'
+              : 'Measure your organization\'s AI maturity across 8 strategic dimensions'}
           </p>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto italic">
             {locale === 'sv'
-              ? '"En digital strategi blir bara så bra som den förankring den får i ledningen"'
-              : '"A digital strategy is only as good as the buy-in it gets from leadership"'}
+              ? '"AI-mognad är inte en teknikfråga – det är en ledningsfråga"'
+              : '"AI maturity is not a technology question – it\'s a leadership question"'}
           </p>
 
           <motion.button
@@ -80,7 +80,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
           >
-            {locale === 'sv' ? 'Starta bedömningen' : 'Start assessment'}
+            {locale === 'sv' ? 'Starta AI-bedömningen' : 'Start AI assessment'}
             <ArrowRight className="w-5 h-5" />
           </motion.button>
         </motion.div>
@@ -118,7 +118,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
                   <div className="flex items-center gap-2 mb-4">
                     <TrendingUp className="w-5 h-5 text-orange-400" />
                     <span className="text-sm font-medium text-slate-300">
-                      {locale === 'sv' ? 'Er mognadsnivå' : 'Your maturity level'}
+                      {locale === 'sv' ? 'Er AI-mognadsnivå' : 'Your AI maturity level'}
                     </span>
                   </div>
 
@@ -155,8 +155,8 @@ export function LandingPage({ onStart }: LandingPageProps) {
                   </div>
 
                   <div className="text-center mt-2">
-                    <span className="inline-block px-3 py-1 bg-orange-500/20 text-orange-400 text-sm font-medium rounded-full">
-                      {locale === 'sv' ? 'Nivå 4: Proaktiv' : 'Level 4: Proactive'}
+                    <span className="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-sm font-medium rounded-full">
+                      {locale === 'sv' ? 'Nivå 4: Skalande' : 'Level 4: Scaling'}
                     </span>
                   </div>
                 </div>
@@ -168,10 +168,10 @@ export function LandingPage({ onStart }: LandingPageProps) {
                   </div>
                   <div className="space-y-3">
                     {[
-                      { name: locale === 'sv' ? 'Gemensam Bild' : 'Shared Understanding', score: 4.2, color: 'bg-emerald-500' },
-                      { name: locale === 'sv' ? 'Strategisk Koppling' : 'Strategic Alignment', score: 3.6, color: 'bg-blue-500' },
-                      { name: locale === 'sv' ? 'Prioritering & Beslut' : 'Prioritization', score: 3.8, color: 'bg-purple-500' },
-                      { name: locale === 'sv' ? 'Ägarskap' : 'Ownership', score: 3.4, color: 'bg-orange-500' },
+                      { name: locale === 'sv' ? 'Strategi & Ledarskap' : 'Strategy & Leadership', score: 4.2, color: 'bg-teal-500' },
+                      { name: locale === 'sv' ? 'Data & Infrastruktur' : 'Data & Infrastructure', score: 3.6, color: 'bg-cyan-500' },
+                      { name: locale === 'sv' ? 'Styrning & Etik' : 'Governance & Ethics', score: 3.8, color: 'bg-orange-500' },
+                      { name: locale === 'sv' ? 'Kompetens & Kultur' : 'Competence & Culture', score: 3.4, color: 'bg-emerald-500' },
                     ].map((dim, i) => (
                       <div key={i}>
                         <div className="flex justify-between text-xs mb-1">
@@ -213,8 +213,8 @@ export function LandingPage({ onStart }: LandingPageProps) {
                     </div>
                     <p>
                       {locale === 'sv'
-                        ? 'Stark gemensam förståelse för digitaliseringens betydelse i ledningsgruppen.'
-                        : 'Strong shared understanding of digitalization importance in the leadership team.'}
+                        ? 'Starkt strategiskt ledarskap och tydlig AI-vision på ledningsnivå.'
+                        : 'Strong strategic leadership and clear AI vision at management level.'}
                     </p>
                   </motion.div>
 
@@ -229,8 +229,8 @@ export function LandingPage({ onStart }: LandingPageProps) {
                     </div>
                     <p>
                       {locale === 'sv'
-                        ? 'Potential att förbättra ägarskap och ansvarsutkrävande i digitala initiativ.'
-                        : 'Potential to improve ownership and accountability in digital initiatives.'}
+                        ? 'Potential att förbättra AI-kompetens och kultur i hela organisationen.'
+                        : 'Potential to improve AI competence and culture across the organization.'}
                     </p>
                   </motion.div>
 
@@ -240,13 +240,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
                     transition={{ delay: 0.8 }}
                     className="flex gap-3"
                   >
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
-                      <span className="text-blue-400 text-xs">→</span>
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center">
+                      <span className="text-teal-400 text-xs">→</span>
                     </div>
                     <p>
                       {locale === 'sv'
-                        ? 'Rekommendation: Fokusera på att tydliggöra roller och mandat för digital förändring.'
-                        : 'Recommendation: Focus on clarifying roles and mandates for digital change.'}
+                        ? 'Rekommendation: Kartlägg er status gentemot EU AI Act och formalisera AI-styrning.'
+                        : 'Recommendation: Map your status against the EU AI Act and formalize AI governance.'}
                     </p>
                   </motion.div>
                 </div>
@@ -313,7 +313,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           })}
         </motion.div>
 
-        {/* Why digital maturity assessment */}
+        {/* Why AI maturity assessment */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -321,23 +321,23 @@ export function LandingPage({ onStart }: LandingPageProps) {
           className="mb-24 text-center max-w-4xl mx-auto"
         >
           <h2 className="text-2xl font-bold text-foreground mb-6">
-            {locale === 'sv' ? 'Varför mäta digital mognad?' : 'Why measure digital maturity?'}
+            {locale === 'sv' ? 'Varför mäta AI-mognad?' : 'Why measure AI maturity?'}
           </h2>
           <div className="space-y-4 text-muted-foreground">
             <p>
               {locale === 'sv'
-                ? 'En digital mognadsmätning skapar ett gemensamt och verifierbart nuläge för ledning och verksamhet. Den flyttar dialogen från upplevda behov och lösryckta initiativ till en sammanhängande förståelse för hur styrning, förmågor, arbetssätt och teknik faktiskt hänger ihop.'
-                : 'A digital maturity assessment creates a shared and verifiable baseline for leadership and operations. It shifts the dialogue from perceived needs and disconnected initiatives to a coherent understanding of how governance, capabilities, ways of working and technology actually connect.'}
+                ? 'En AI-mognadsmätning skapar ett gemensamt och verifierbart nuläge för hela organisationen. Den flyttar dialogen från upplevda behov och lösryckta AI-initiativ till en sammanhängande förståelse för hur strategi, data, kompetens, styrning och teknik faktiskt hänger ihop i er AI-resa.'
+                : 'An AI maturity assessment creates a shared and verifiable baseline for the entire organization. It shifts the dialogue from perceived needs and disconnected AI initiatives to a coherent understanding of how strategy, data, competence, governance and technology actually connect in your AI journey.'}
             </p>
             <p>
               {locale === 'sv'
-                ? 'När nuläget är tydligt blir det möjligt att formulera en digital ambition som är både relevant och realistisk – och att skilja mellan vad som är strategiskt viktigt och vad som bara är angeläget.'
-                : 'When the current state is clear, it becomes possible to formulate a digital ambition that is both relevant and realistic – and to distinguish between what is strategically important and what is merely urgent.'}
+                ? 'Med EU:s AI-förordning (AI Act) som träder i kraft är det viktigare än någonsin att förstå var ni står – både vad gäller teknisk mognad och regelefterlevnad. En strukturerad bedömning ger er verktygen att prioritera rätt och agera proaktivt.'
+                : 'With the EU AI Act coming into effect, it is more important than ever to understand where you stand – both in terms of technical maturity and regulatory compliance. A structured assessment gives you the tools to prioritize correctly and act proactively.'}
             </p>
             <p className="font-medium text-foreground">
               {locale === 'sv'
-                ? 'Resultatet är en digital förflyttning som bygger på genomförbarhet, tydligt ansvar och ett tempo som organisationen faktiskt klarar att hålla över tid.'
-                : 'The result is a digital transformation built on feasibility, clear accountability and a pace the organization can actually sustain over time.'}
+                ? 'Resultatet är en AI-förflyttning som bygger på genomförbarhet, tydligt ansvar och ett tempo som organisationen faktiskt klarar att hålla över tid.'
+                : 'The result is an AI transformation built on feasibility, clear accountability and a pace the organization can actually sustain over time.'}
             </p>
           </div>
         </motion.div>
@@ -356,18 +356,18 @@ export function LandingPage({ onStart }: LandingPageProps) {
             {[
               {
                 step: 1,
-                sv: { title: 'Genomför', description: 'Varje ledningsgruppmedlem fyller i enkäten individuellt' },
-                en: { title: 'Complete', description: 'Each leadership team member fills in the survey individually' },
+                sv: { title: 'Genomför', description: 'Varje deltagare fyller i enkäten individuellt – 32 påståenden om er AI-mognad' },
+                en: { title: 'Complete', description: 'Each participant fills in the survey individually – 32 statements about your AI maturity' },
               },
               {
                 step: 2,
-                sv: { title: 'Analysera', description: 'Se individuella och aggregerade resultat per dimension' },
-                en: { title: 'Analyze', description: 'View individual and aggregated results per dimension' },
+                sv: { title: 'Analysera', description: 'Se individuella och aggregerade resultat per dimension med EU AI Act-kontext' },
+                en: { title: 'Analyze', description: 'View individual and aggregated results per dimension with EU AI Act context' },
               },
               {
                 step: 3,
-                sv: { title: 'Agera', description: 'Använd AI-insikterna för att planera er utvecklingsresa' },
-                en: { title: 'Act', description: 'Use AI insights to plan your development journey' },
+                sv: { title: 'Agera', description: 'Använd AI-insikterna för att planera er organisations AI-resa' },
+                en: { title: 'Act', description: 'Use AI insights to plan your organization\'s AI journey' },
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
@@ -396,15 +396,15 @@ export function LandingPage({ onStart }: LandingPageProps) {
         >
           <Users className="w-12 h-12 text-orange-400 mx-auto mb-4" />
           <h3 className="text-xl font-bold text-white mb-2">
-            {locale === 'sv' ? 'Vill ni mäta hela ledningsgruppen?' : 'Want to assess your entire leadership team?'}
+            {locale === 'sv' ? 'Vill ni mäta hela organisationens AI-mognad?' : 'Want to assess your entire organization\'s AI maturity?'}
           </h3>
           <p className="text-slate-300 mb-6 max-w-xl mx-auto">
             {locale === 'sv'
-              ? 'Få aggregerade resultat med flera svaranden, jämförelseanalys och professionell facilitering av er digitala mognadsmätning.'
-              : 'Get aggregated results with multiple respondents, comparative analysis and professional facilitation of your digital maturity assessment.'}
+              ? 'Få aggregerade resultat med flera svaranden, jämförelseanalys och professionell facilitering av er AI-mognadsmätning.'
+              : 'Get aggregated results with multiple respondents, comparative analysis and professional facilitation of your AI maturity assessment.'}
           </p>
           <a
-            href="mailto:kontakt@criteroconsulting.se?subject=Digital mognadsmätning – förfrågan"
+            href="mailto:kontakt@criteroconsulting.se?subject=AI-mognadsmätning – förfrågan"
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
           >
             <Mail className="w-5 h-5" />

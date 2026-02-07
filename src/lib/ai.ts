@@ -19,77 +19,141 @@ interface AIInsights {
 const predefinedContent = {
   sv: {
     strengths: {
-      gemesamBild: [
-        'Ni har en god grundförståelse för vad digitalisering innebär',
-        'Ledningen delar en gemensam bild av digitaliseringens betydelse',
+      strategiLedarskap: [
+        'Ledningen har en tydlig vision för hur AI ska bidra till verksamhetens mål',
+        'Det finns ett uttalat strategiskt ägarskap för AI-initiativ på ledningsnivå',
       ],
-      strategiskKoppling: [
-        'Digital utveckling är kopplad till verksamhetsmålen',
-        'Digitalisering diskuteras som en affärsfråga, inte bara teknik',
+      anvandsfall: [
+        'Ni har identifierat konkreta AI-användningsfall med tydlig affärsnytta',
+        'Det finns en strukturerad process för att utvärdera och prioritera AI-möjligheter',
       ],
-      prioriteringBeslut: [
-        'Ni har etablerade principer för prioritering',
-        'Beslut fattas baserat på faktaunderlag och analys',
+      dataInfrastruktur: [
+        'Er datainfrastruktur ger en stabil grund för AI-tillämpningar',
+        'Ni har god tillgång till kvalitetsdata som kan användas för AI-modeller',
       ],
-      agarskapGenomforande: [
-        'Ledningen tar aktivt ansvar för digital utveckling',
-        'Ni förstår vikten av förändringsledning',
+      kompetensKultur: [
+        'Det finns en positiv inställning till AI och en vilja att lära i organisationen',
+        'Ni investerar aktivt i AI-kompetens och kompetensutveckling',
+      ],
+      styrningEtik: [
+        'Ni har en medvetenhet om etiska aspekter och ansvarsfull AI-användning',
+        'Det finns riktlinjer eller policyer för hur AI får användas i verksamheten',
+      ],
+      teknikArkitektur: [
+        'Er tekniska arkitektur stödjer integrering av AI-lösningar',
+        'Ni har en tydlig bild av vilka AI-verktyg och plattformar som passar er verksamhet',
+      ],
+      organisationProcesser: [
+        'AI-initiativ är integrerade i befintliga verksamhetsprocesser',
+        'Det finns tydliga roller och ansvar för AI-relaterat arbete',
+      ],
+      ekosystemInnovation: [
+        'Ni samarbetar aktivt med externa partners för att driva AI-innovation',
+        'Det finns en kultur av experimenterande och lärande kring nya AI-tillämpningar',
       ],
     },
     improvements: {
-      gemesamBild: [
-        'Fördjupa förståelsen för skillnaden mellan IT-drift och digital utveckling',
-        'Skapa en gemensam definition av digital mognad',
+      strategiLedarskap: [
+        'Formulera en tydlig AI-strategi kopplad till verksamhetens övergripande mål',
+        'Säkerställ att ledningen har tillräcklig AI-förståelse för att fatta informerade beslut',
       ],
-      strategiskKoppling: [
-        'Koppla digitala initiativ tydligare till verksamhetsmål',
-        'Integrera digital planering i den strategiska processen',
+      anvandsfall: [
+        'Kartlägg systematiskt möjliga AI-användningsfall och deras förväntade affärsnytta',
+        'Börja med avgränsade pilotprojekt som kan visa konkret värde snabbt',
       ],
-      prioriteringBeslut: [
-        'Utveckla tydligare prioriteringsprinciper',
-        'Inför systematisk uppföljning av digitala satsningar',
+      dataInfrastruktur: [
+        'Inventera och förbättra datakvaliteten som underlag för AI-tillämpningar',
+        'Investera i en modern datainfrastruktur som möjliggör skalbar AI-användning',
       ],
-      agarskapGenomforande: [
-        'Stärk ledningens aktiva engagemang i digital transformation',
-        'Investera mer i kompetens och kultur, inte bara teknik',
+      kompetensKultur: [
+        'Utveckla en plan för AI-kompetensutveckling på alla nivåer i organisationen',
+        'Skapa en kultur som uppmuntrar experimenterande och lärande kring AI',
+      ],
+      styrningEtik: [
+        'Ta fram tydliga riktlinjer för ansvarsfull AI-användning i linje med EU:s AI-förordning',
+        'Inför processer för riskbedömning och konsekvensanalys av AI-system',
+      ],
+      teknikArkitektur: [
+        'Utveckla en teknisk arkitektur som stödjer skalbar AI-integration',
+        'Utvärdera och välj AI-plattformar som passar organisationens behov och mognad',
+      ],
+      organisationProcesser: [
+        'Integrera AI-initiativ i befintliga verksamhetsprocesser och beslutsflöden',
+        'Definiera tydliga roller och ansvar för AI-relaterat arbete i organisationen',
+      ],
+      ekosystemInnovation: [
+        'Bygg partnerskap med akademi, teknikföretag och branschorganisationer inom AI',
+        'Skapa strukturer för att systematiskt bevaka och utvärdera nya AI-möjligheter',
       ],
     },
   },
   en: {
     strengths: {
-      gemesamBild: [
-        'You have a good basic understanding of what digitalization means',
-        'Leadership shares a common view of the significance of digitalization',
+      strategiLedarskap: [
+        'Leadership has a clear vision for how AI should contribute to business goals',
+        'There is explicit strategic ownership for AI initiatives at the leadership level',
       ],
-      strategiskKoppling: [
-        'Digital development is connected to business goals',
-        'Digitalization is discussed as a business issue, not just technology',
+      anvandsfall: [
+        'You have identified concrete AI use cases with clear business value',
+        'There is a structured process for evaluating and prioritizing AI opportunities',
       ],
-      prioriteringBeslut: [
-        'You have established principles for prioritization',
-        'Decisions are made based on evidence and analysis',
+      dataInfrastruktur: [
+        'Your data infrastructure provides a solid foundation for AI applications',
+        'You have good access to quality data that can be used for AI models',
       ],
-      agarskapGenomforande: [
-        'Leadership actively takes responsibility for digital development',
-        'You understand the importance of change management',
+      kompetensKultur: [
+        'There is a positive attitude toward AI and a willingness to learn within the organization',
+        'You actively invest in AI competence and skills development',
+      ],
+      styrningEtik: [
+        'You have an awareness of ethical aspects and responsible AI use',
+        'There are guidelines or policies for how AI may be used in the organization',
+      ],
+      teknikArkitektur: [
+        'Your technical architecture supports integration of AI solutions',
+        'You have a clear picture of which AI tools and platforms suit your organization',
+      ],
+      organisationProcesser: [
+        'AI initiatives are integrated into existing business processes',
+        'There are clear roles and responsibilities for AI-related work',
+      ],
+      ekosystemInnovation: [
+        'You actively collaborate with external partners to drive AI innovation',
+        'There is a culture of experimentation and learning around new AI applications',
       ],
     },
     improvements: {
-      gemesamBild: [
-        'Deepen understanding of the difference between IT operations and digital development',
-        'Create a shared definition of digital maturity',
+      strategiLedarskap: [
+        'Formulate a clear AI strategy linked to overall business objectives',
+        'Ensure leadership has sufficient AI understanding to make informed decisions',
       ],
-      strategiskKoppling: [
-        'Connect digital initiatives more clearly to business goals',
-        'Integrate digital planning into the strategic process',
+      anvandsfall: [
+        'Systematically map possible AI use cases and their expected business value',
+        'Start with focused pilot projects that can demonstrate concrete value quickly',
       ],
-      prioriteringBeslut: [
-        'Develop clearer prioritization principles',
-        'Implement systematic follow-up of digital investments',
+      dataInfrastruktur: [
+        'Inventory and improve data quality as a foundation for AI applications',
+        'Invest in a modern data infrastructure that enables scalable AI usage',
       ],
-      agarskapGenomforande: [
-        'Strengthen leadership\'s active engagement in digital transformation',
-        'Invest more in competence and culture, not just technology',
+      kompetensKultur: [
+        'Develop a plan for AI skills development at all levels of the organization',
+        'Create a culture that encourages experimentation and learning around AI',
+      ],
+      styrningEtik: [
+        'Develop clear guidelines for responsible AI use in line with the EU AI Act',
+        'Implement processes for risk assessment and impact analysis of AI systems',
+      ],
+      teknikArkitektur: [
+        'Develop a technical architecture that supports scalable AI integration',
+        'Evaluate and select AI platforms that match the organization\'s needs and maturity',
+      ],
+      organisationProcesser: [
+        'Integrate AI initiatives into existing business processes and decision flows',
+        'Define clear roles and responsibilities for AI-related work in the organization',
+      ],
+      ekosystemInnovation: [
+        'Build partnerships with academia, technology companies, and industry organizations in AI',
+        'Create structures for systematically monitoring and evaluating new AI opportunities',
       ],
     },
   },
@@ -152,17 +216,21 @@ async function callOpenRouter(
   }
 
   const systemPrompt = locale === 'sv'
-    ? `Du är en expert på digital transformation och organisationsutveckling.
-       Ge konkreta, handlingsbara råd baserat på en digital mognadsbedömning.
+    ? `Du är en expert på AI-strategi, AI-mognad och organisationsutveckling.
+       Du har djup kunskap om EU:s AI-förordning (AI Act), AI Swedens ramverk för AI-mognad,
+       och OECD:s indikatorer för AI-beredskap.
+       Ge konkreta, handlingsbara råd baserat på en AI-mognadsbedömning.
        Svara alltid på svenska. Var professionell men varm i tonen.
        Fokusera på praktiska nästa steg, inte abstrakta koncept.`
-    : `You are an expert in digital transformation and organizational development.
-       Provide concrete, actionable advice based on a digital maturity assessment.
+    : `You are an expert in AI strategy, AI maturity and organizational development.
+       You have deep knowledge of the EU AI Act, AI Sweden's framework for AI maturity,
+       and OECD indicators for AI readiness.
+       Provide concrete, actionable advice based on an AI maturity assessment.
        Always respond in English. Be professional yet warm in tone.
        Focus on practical next steps, not abstract concepts.`;
 
   const userPrompt = locale === 'sv'
-    ? `Analysera följande digital mognadsbedömning för en ledningsgrupp:
+    ? `Analysera följande AI-mognadsbedömning för en organisation:
 
        Övergripande poäng: ${context.overallScore}/5 (Nivå ${context.maturityLevel}: ${context.maturityLevelName})
 
@@ -174,13 +242,13 @@ async function callOpenRouter(
 
        Ge en JSON-respons med följande struktur:
        {
-         "summary": "2-3 meningar som sammanfattar resultatet",
+         "summary": "2-3 meningar som sammanfattar resultatet med hänsyn till EU:s AI-förordning och branschpraxis",
          "strengths": ["3 styrkor baserat på höga poäng"],
          "improvements": ["3 förbättringsområden baserat på låga poäng"],
-         "recommendations": ["3 konkreta rekommendationer anpassade efter mognadsnivån"],
+         "recommendations": ["3 konkreta rekommendationer anpassade efter AI-mognadsnivån"],
          "nextSteps": ["3 praktiska nästa steg för de kommande 3-6 månaderna"]
        }`
-    : `Analyze the following digital maturity assessment for a leadership team:
+    : `Analyze the following AI maturity assessment for an organization:
 
        Overall score: ${context.overallScore}/5 (Level ${context.maturityLevel}: ${context.maturityLevelName})
 
@@ -192,10 +260,10 @@ async function callOpenRouter(
 
        Provide a JSON response with the following structure:
        {
-         "summary": "2-3 sentences summarizing the result",
+         "summary": "2-3 sentences summarizing the result with consideration for the EU AI Act and industry best practices",
          "strengths": ["3 strengths based on high scores"],
          "improvements": ["3 areas for improvement based on low scores"],
-         "recommendations": ["3 concrete recommendations adapted to the maturity level"],
+         "recommendations": ["3 concrete recommendations adapted to the AI maturity level"],
          "nextSteps": ["3 practical next steps for the coming 3-6 months"]
        }`;
 
@@ -205,7 +273,7 @@ async function callOpenRouter(
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-      'X-Title': 'Mognadsmätaren',
+      'X-Title': 'AI-Mognadsmätaren',
     },
     body: JSON.stringify({
       model: 'anthropic/claude-3.5-sonnet',
@@ -252,8 +320,8 @@ function generatePredefinedInsights(input: AIInsightsInput): AIInsights {
   const content = predefinedContent[locale];
 
   const summary = locale === 'sv'
-    ? `Er ledningsgrupp befinner sig på nivå ${maturityLevel} (${currentLevel.sv.name}) med en övergripande poäng på ${overallScore.toFixed(1)}/5. ${strongestDim[locale].name} är ert starkaste område medan ${weakestDim[locale].name} har störst utvecklingspotential.`
-    : `Your leadership team is at level ${maturityLevel} (${currentLevel.en.name}) with an overall score of ${overallScore.toFixed(1)}/5. ${strongestDim[locale].name} is your strongest area while ${weakestDim[locale].name} has the most development potential.`;
+    ? `Er organisation befinner sig på nivå ${maturityLevel} (${currentLevel.sv.name}) i AI-mognad med en övergripande poäng på ${overallScore.toFixed(1)}/5. Mognadsnivåerna sträcker sig från Utforskande till Ledande, och ert resultat indikerar var ni står i resan mot att bli en AI-driven organisation. ${strongestDim[locale].name} är ert starkaste område medan ${weakestDim[locale].name} har störst utvecklingspotential. Med tanke på EU:s AI-förordning är det viktigt att arbeta strukturerat med styrning och etik parallellt med teknisk utveckling.`
+    : `Your organization is at level ${maturityLevel} (${currentLevel.en.name}) in AI maturity with an overall score of ${overallScore.toFixed(1)}/5. The maturity levels range from Exploring to Leading, and your result indicates where you stand on the journey toward becoming an AI-driven organization. ${strongestDim[locale].name} is your strongest area while ${weakestDim[locale].name} has the most development potential. Given the EU AI Act, it is important to work systematically on governance and ethics alongside technical development.`;
 
   const strengths = content.strengths[strongestDim.id as keyof typeof content.strengths] || [];
   const improvements = content.improvements[weakestDim.id as keyof typeof content.improvements] || [];
@@ -272,14 +340,14 @@ function generatePredefinedInsights(input: AIInsightsInput): AIInsights {
 
   const nextSteps = locale === 'sv'
     ? [
-        'Genomför en uppföljande mätning om 6 månader',
-        'Sätt konkreta mål för de två svagaste dimensionerna',
-        'Involvera fler i ledningsgruppen i digitala initiativ',
+        'Genomför en uppföljande AI-mognadsmätning om 6 månader',
+        'Kartlägg er organisations status gentemot EU:s AI-förordning',
+        'Identifiera och prioritera 2\u20133 AI-användningsfall med tydlig affärsnytta',
       ]
     : [
-        'Conduct a follow-up assessment in 6 months',
-        'Set concrete goals for the two weakest dimensions',
-        'Involve more leadership team members in digital initiatives',
+        'Conduct a follow-up AI maturity assessment in 6 months',
+        'Map your organization\'s status against the EU AI Act',
+        'Identify and prioritize 2\u20133 AI use cases with clear business value',
       ];
 
   return {

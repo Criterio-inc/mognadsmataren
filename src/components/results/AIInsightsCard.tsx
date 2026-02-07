@@ -20,9 +20,9 @@ interface AIInsightsCardProps {
 export function AIInsightsCard({ insights, isLoading, locale }: AIInsightsCardProps) {
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-2xl p-8">
+      <div className="bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl p-8">
         <div className="flex items-center justify-center gap-3">
-          <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+          <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
           <span className="text-gray-600 dark:text-gray-300">
             {locale === 'sv' ? 'Genererar AI-insikter...' : 'Generating AI insights...'}
           </span>
@@ -41,7 +41,7 @@ export function AIInsightsCard({ insights, isLoading, locale }: AIInsightsCardPr
       icon: Sparkles,
       content: insights.summary,
       type: 'text' as const,
-      color: 'purple',
+      color: 'teal',
     },
     {
       title: locale === 'sv' ? 'Era styrkor' : 'Your strengths',
@@ -62,7 +62,7 @@ export function AIInsightsCard({ insights, isLoading, locale }: AIInsightsCardPr
       icon: Lightbulb,
       content: insights.recommendations,
       type: 'list' as const,
-      color: 'blue',
+      color: 'cyan',
     },
     {
       title: locale === 'sv' ? 'Nästa steg' : 'Next steps',
@@ -74,10 +74,10 @@ export function AIInsightsCard({ insights, isLoading, locale }: AIInsightsCardPr
   ];
 
   const colorClasses = {
-    purple: {
-      bg: 'bg-purple-100 dark:bg-purple-900/30',
-      icon: 'text-purple-600 dark:text-purple-400',
-      border: 'border-purple-200 dark:border-purple-800',
+    teal: {
+      bg: 'bg-teal-100 dark:bg-teal-900/30',
+      icon: 'text-teal-600 dark:text-teal-400',
+      border: 'border-teal-200 dark:border-teal-800',
     },
     green: {
       bg: 'bg-green-100 dark:bg-green-900/30',
@@ -89,10 +89,10 @@ export function AIInsightsCard({ insights, isLoading, locale }: AIInsightsCardPr
       icon: 'text-orange-600 dark:text-orange-400',
       border: 'border-orange-200 dark:border-orange-800',
     },
-    blue: {
-      bg: 'bg-blue-100 dark:bg-blue-900/30',
-      icon: 'text-blue-600 dark:text-blue-400',
-      border: 'border-blue-200 dark:border-blue-800',
+    cyan: {
+      bg: 'bg-cyan-100 dark:bg-cyan-900/30',
+      icon: 'text-cyan-600 dark:text-cyan-400',
+      border: 'border-cyan-200 dark:border-cyan-800',
     },
     indigo: {
       bg: 'bg-indigo-100 dark:bg-indigo-900/30',
@@ -104,7 +104,7 @@ export function AIInsightsCard({ insights, isLoading, locale }: AIInsightsCardPr
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-4">
-        <Sparkles className="w-6 h-6 text-purple-600" />
+        <Sparkles className="w-6 h-6 text-teal-600" />
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           {locale === 'sv' ? 'AI-genererade insikter' : 'AI-generated insights'}
         </h2>

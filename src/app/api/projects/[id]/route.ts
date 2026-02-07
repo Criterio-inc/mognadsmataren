@@ -43,7 +43,10 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
   let aggregatedScores = null;
 
   if (completedSessions.length > 0) {
-    const dimensions = ['gemesamBild', 'strategiskKoppling', 'prioriteringBeslut', 'agarskapGenomforande'] as const;
+    const dimensions = [
+      'strategiLedarskap', 'anvandsfall', 'dataInfrastruktur', 'kompetensKultur',
+      'styrningEtik', 'teknikArkitektur', 'organisationProcesser', 'ekosystemInnovation',
+    ] as const;
 
     aggregatedScores = {
       dimensionScores: {} as Record<string, number>,
