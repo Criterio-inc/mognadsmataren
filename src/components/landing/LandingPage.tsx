@@ -1,10 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAssessmentStore } from '@/lib/store';
-import { ArrowRight, BarChart3, Users, Lightbulb, Clock, TrendingUp, Sparkles, Mail, Brain } from 'lucide-react';
+import { ArrowRight, BarChart3, Users, Lightbulb, Clock, TrendingUp, Sparkles, Mail } from 'lucide-react';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -414,32 +413,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
           <p className="mt-4 text-sm text-slate-400">
             kontakt@criteroconsulting.se
           </p>
-        </motion.div>
-
-        {/* AI Maturity Assessment CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1 }}
-          className="mt-8 bg-gradient-to-br from-teal-800 to-teal-900 rounded-2xl p-8 text-center border border-teal-700"
-        >
-          <Brain className="w-12 h-12 text-teal-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">
-            {locale === 'sv' ? 'Ny: AI-Mognadsmätaren' : 'New: AI Maturity Meter'}
-          </h3>
-          <p className="text-teal-200 mb-6 max-w-xl mx-auto">
-            {locale === 'sv'
-              ? 'Mät er organisations AI-mognad inom 8 strategiska dimensioner – inklusive EU AI Act-beredskap, datastrategi och AI-styrning.'
-              : 'Measure your organization\'s AI maturity across 8 strategic dimensions – including EU AI Act readiness, data strategy and AI governance.'}
-          </p>
-          <Link
-            href="/ai"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
-          >
-            <Brain className="w-5 h-5" />
-            {locale === 'sv' ? 'Starta AI-mognadsmätning' : 'Start AI maturity assessment'}
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </motion.div>
 
         {/* Footer with logo and copyright */}
