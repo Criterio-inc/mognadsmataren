@@ -6,7 +6,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
 // Allowed email domain for Curago consultants
-const ALLOWED_DOMAIN = 'curago.se';
+const ALLOWED_DOMAIN = ['curago.se', 'criteroconsulting.se'];
 
 // Check if email is from allowed domain
 export function isEmailAllowed(email: string): boolean {
