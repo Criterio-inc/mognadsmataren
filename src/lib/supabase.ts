@@ -11,7 +11,7 @@ const ALLOWED_DOMAIN = ['curago.se', 'criteroconsulting.se'];
 // Check if email is from allowed domain
 export function isEmailAllowed(email: string): boolean {
   const domain = email.split('@')[1]?.toLowerCase();
-  return domain === ALLOWED_DOMAIN;
+  return !!domain && ALLOWED_DOMAIN.includes(domain);
 }
 
 // Sign up with email and password
@@ -22,7 +22,7 @@ export async function signUp(
   if (!isEmailAllowed(email)) {
     return {
       success: false,
-      error: `Endast e-postadresser med @${ALLOWED_DOMAIN} kan registrera sig.`,
+      error: `Endast e-postadresser med @${ALLOWED_DOMAIN.join(' eller @')} kan registrera sig.`,
     };
   }
 
@@ -52,7 +52,7 @@ export async function signIn(
   if (!isEmailAllowed(email)) {
     return {
       success: false,
-      error: `Endast e-postadresser med @${ALLOWED_DOMAIN} kan logga in.`,
+      error: `Endast e-postadresser med @${ALLOWED_DOMAIN.join(' eller @')} kan logga in.`,
     };
   }
 
