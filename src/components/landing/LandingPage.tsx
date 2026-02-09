@@ -47,11 +47,11 @@ export function LandingPage({ onStart }: LandingPageProps) {
           className="flex justify-center mb-12"
         >
           <Image
-            src="/critero-icon.svg"
-            alt="Critero"
-            width={120}
-            height={72}
-            className="h-16 w-auto"
+            src="/digmognad-logo.png"
+            alt="Digitala Mognadsmätaren"
+            width={200}
+            height={200}
+            className="h-24 w-auto"
           />
         </motion.div>
 
