@@ -341,14 +341,27 @@ export function calculateDimensionScore(
   const dimQuestions = getQuestionsByDimension(dimension);
   const scores = dimQuestions
     .map(q => responses.get(q.id))
-    .filter((v): v is number => v !== undefined);
+    .filter((v): v is number => v !== undefined && v > 0);
 
   if (scores.length === 0) return 0;
   return scores.reduce((a, b) => a + b, 0) / scores.length;
 }
 
 export function calculateOverallScore(responses: Map<number, number>): number {
-  const allScores = Array.from(responses.values());
+  const allScores = Array.from(responses.values()).filter(v => v > 0);
   if (allScores.length === 0) return 0;
   return allScores.reduce((a, b) => a + b, 0) / allScores.length;
+}
+
+export function countNotApplicable(
+  responses: Map<number, number>,
+  dimension?: Dimension
+): number {
+  const relevantQuestions = dimension
+    ? getQuestionsByDimension(dimension)
+    : questions;
+  return relevantQuestions
+    .map(q => responses.get(q.id))
+    .filter(v => v === 0)
+    .length;
 }

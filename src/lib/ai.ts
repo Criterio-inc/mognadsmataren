@@ -5,6 +5,8 @@ interface AIInsightsInput {
   overallScore: number;
   maturityLevel: number;
   locale: 'sv' | 'en';
+  notApplicableCounts?: Record<Dimension, number> | null;
+  totalNotApplicable?: number;
 }
 
 interface AIInsights {
@@ -95,6 +97,32 @@ const predefinedContent = {
   },
 };
 
+function buildNotApplicableContext(
+  input: AIInsightsInput,
+  locale: 'sv' | 'en'
+): string {
+  const { notApplicableCounts, totalNotApplicable } = input;
+  if (!totalNotApplicable || totalNotApplicable === 0) return '';
+
+  const naDimensions = dimensions
+    .filter((d) => notApplicableCounts && notApplicableCounts[d.id] > 0)
+    .map((d) => ({
+      name: d[locale].name,
+      count: notApplicableCounts![d.id],
+      total: d.questionIds.length,
+    }));
+
+  if (locale === 'sv') {
+    return `\n\n       Observera: ${totalNotApplicable} av 22 påståenden markerades som "Ej aktuellt".
+       ${naDimensions.map((d) => `- ${d.name}: ${d.count} av ${d.total} påståenden "Ej aktuellt"`).join('\n       ')}
+       Detta är en viktig signal – områden markerade som "Ej aktuellt" kan indikera att frågan inte har adresserats eller diskuterats i ledningsgruppen, vilket i sig är ett värdefullt resultat att reflektera över.`;
+  }
+
+  return `\n\n       Note: ${totalNotApplicable} of 22 statements were marked as "Not applicable".
+       ${naDimensions.map((d) => `- ${d.name}: ${d.count} of ${d.total} statements "Not applicable"`).join('\n       ')}
+       This is an important signal – areas marked as "Not applicable" may indicate that the topic has not been addressed or discussed in the leadership team, which itself is a valuable finding to reflect on.`;
+}
+
 export async function generateAIInsights(input: AIInsightsInput): Promise<AIInsights> {
   const { dimensionScores, overallScore, maturityLevel, locale } = input;
 
@@ -119,6 +147,7 @@ export async function generateAIInsights(input: AIInsightsInput): Promise<AIInsi
     })),
     strongestAreas: strongestDims.map((d) => d[locale].name),
     weakestAreas: weakestDims.map((d) => d[locale].name),
+    notApplicableContext: buildNotApplicableContext(input, locale),
   };
 
   // Try AI generation via OpenRouter
@@ -143,6 +172,7 @@ async function callOpenRouter(
     dimensionScores: { name: string; score: string }[];
     strongestAreas: string[];
     weakestAreas: string[];
+    notApplicableContext: string;
   },
   locale: 'sv' | 'en'
 ): Promise<AIInsights | null> {
@@ -155,11 +185,13 @@ async function callOpenRouter(
     ? `Du är en expert på digital transformation och organisationsutveckling.
        Ge konkreta, handlingsbara råd baserat på en digital mognadsbedömning.
        Svara alltid på svenska. Var professionell men varm i tonen.
-       Fokusera på praktiska nästa steg, inte abstrakta koncept.`
+       Fokusera på praktiska nästa steg, inte abstrakta koncept.
+       Om påståenden har markerats som "Ej aktuellt" är detta en viktig signal som bör adresseras i analysen – det kan tyda på att området inte har uppmärksammats eller diskuterats.`
     : `You are an expert in digital transformation and organizational development.
        Provide concrete, actionable advice based on a digital maturity assessment.
        Always respond in English. Be professional yet warm in tone.
-       Focus on practical next steps, not abstract concepts.`;
+       Focus on practical next steps, not abstract concepts.
+       If statements were marked as "Not applicable", this is an important signal that should be addressed in the analysis – it may indicate that the area has not been recognized or discussed.`;
 
   const userPrompt = locale === 'sv'
     ? `Analysera följande digital mognadsbedömning för en ledningsgrupp:
@@ -170,13 +202,13 @@ async function callOpenRouter(
        ${context.dimensionScores.map((d) => `- ${d.name}: ${d.score}/5`).join('\n')}
 
        Starkaste områden: ${context.strongestAreas.join(', ') || 'Inga tydligt starka'}
-       Svagaste områden: ${context.weakestAreas.join(', ') || 'Inga tydligt svaga'}
+       Svagaste områden: ${context.weakestAreas.join(', ') || 'Inga tydligt svaga'}${context.notApplicableContext}
 
        Ge en JSON-respons med följande struktur:
        {
-         "summary": "2-3 meningar som sammanfattar resultatet",
+         "summary": "2-3 meningar som sammanfattar resultatet, inkludera observation om eventuella 'Ej aktuellt'-svar",
          "strengths": ["3 styrkor baserat på höga poäng"],
-         "improvements": ["3 förbättringsområden baserat på låga poäng"],
+         "improvements": ["3 förbättringsområden baserat på låga poäng och/eller 'Ej aktuellt'-svar"],
          "recommendations": ["3 konkreta rekommendationer anpassade efter mognadsnivån"],
          "nextSteps": ["3 praktiska nästa steg för de kommande 3-6 månaderna"]
        }`
@@ -188,13 +220,13 @@ async function callOpenRouter(
        ${context.dimensionScores.map((d) => `- ${d.name}: ${d.score}/5`).join('\n')}
 
        Strongest areas: ${context.strongestAreas.join(', ') || 'None clearly strong'}
-       Weakest areas: ${context.weakestAreas.join(', ') || 'None clearly weak'}
+       Weakest areas: ${context.weakestAreas.join(', ') || 'None clearly weak'}${context.notApplicableContext}
 
        Provide a JSON response with the following structure:
        {
-         "summary": "2-3 sentences summarizing the result",
+         "summary": "2-3 sentences summarizing the result, include observation about any 'Not applicable' answers",
          "strengths": ["3 strengths based on high scores"],
-         "improvements": ["3 areas for improvement based on low scores"],
+         "improvements": ["3 areas for improvement based on low scores and/or 'Not applicable' answers"],
          "recommendations": ["3 concrete recommendations adapted to the maturity level"],
          "nextSteps": ["3 practical next steps for the coming 3-6 months"]
        }`;
@@ -239,7 +271,7 @@ async function callOpenRouter(
 }
 
 function generatePredefinedInsights(input: AIInsightsInput): AIInsights {
-  const { dimensionScores, overallScore, maturityLevel, locale } = input;
+  const { dimensionScores, overallScore, maturityLevel, locale, notApplicableCounts, totalNotApplicable } = input;
 
   const sortedDimensions = dimensions
     .map((d) => ({ ...d, score: dimensionScores[d.id] }))
@@ -251,12 +283,44 @@ function generatePredefinedInsights(input: AIInsightsInput): AIInsights {
   const currentLevel = maturityLevels.find((l) => l.level === maturityLevel)!;
   const content = predefinedContent[locale];
 
+  // Build N/A observation for summary
+  let naSummary = '';
+  if (totalNotApplicable && totalNotApplicable > 0) {
+    const naDimNames = dimensions
+      .filter((d) => notApplicableCounts && notApplicableCounts[d.id] > 0)
+      .map((d) => d[locale].name);
+
+    if (locale === 'sv') {
+      naSummary = ` Noterbart är att ${totalNotApplicable} påståenden markerades som "Ej aktuellt"${naDimNames.length > 0 ? `, främst inom ${naDimNames.join(' och ')}` : ''} – detta tyder på att vissa områden ännu inte har adresserats.`;
+    } else {
+      naSummary = ` Notably, ${totalNotApplicable} statements were marked as "Not applicable"${naDimNames.length > 0 ? `, primarily in ${naDimNames.join(' and ')}` : ''} – this suggests some areas have not yet been addressed.`;
+    }
+  }
+
   const summary = locale === 'sv'
-    ? `Er ledningsgrupp befinner sig på nivå ${maturityLevel} (${currentLevel.sv.name}) med en övergripande poäng på ${overallScore.toFixed(1)}/5. ${strongestDim[locale].name} är ert starkaste område medan ${weakestDim[locale].name} har störst utvecklingspotential.`
-    : `Your leadership team is at level ${maturityLevel} (${currentLevel.en.name}) with an overall score of ${overallScore.toFixed(1)}/5. ${strongestDim[locale].name} is your strongest area while ${weakestDim[locale].name} has the most development potential.`;
+    ? `Er ledningsgrupp befinner sig på nivå ${maturityLevel} (${currentLevel.sv.name}) med en övergripande poäng på ${overallScore.toFixed(1)}/5. ${strongestDim[locale].name} är ert starkaste område medan ${weakestDim[locale].name} har störst utvecklingspotential.${naSummary}`
+    : `Your leadership team is at level ${maturityLevel} (${currentLevel.en.name}) with an overall score of ${overallScore.toFixed(1)}/5. ${strongestDim[locale].name} is your strongest area while ${weakestDim[locale].name} has the most development potential.${naSummary}`;
 
   const strengths = content.strengths[strongestDim.id as keyof typeof content.strengths] || [];
-  const improvements = content.improvements[weakestDim.id as keyof typeof content.improvements] || [];
+
+  // Build improvements including N/A observations
+  const baseImprovements = content.improvements[weakestDim.id as keyof typeof content.improvements] || [];
+  const improvements = [...baseImprovements];
+
+  // Add N/A-specific improvement if applicable
+  if (totalNotApplicable && totalNotApplicable > 0) {
+    const highNaDims = dimensions.filter(
+      (d) => notApplicableCounts && notApplicableCounts[d.id] >= Math.ceil(d.questionIds.length / 2)
+    );
+    if (highNaDims.length > 0) {
+      const dimNames = highNaDims.map((d) => d[locale].name).join(', ');
+      if (locale === 'sv') {
+        improvements.push(`Att frågor inom ${dimNames} bedöms som "Ej aktuellt" indikerar ett behov av att lyfta dessa ämnen i ledningsgruppen`);
+      } else {
+        improvements.push(`Questions in ${dimNames} being rated "Not applicable" indicates a need to raise these topics in the leadership team`);
+      }
+    }
+  }
 
   const recommendations = locale === 'sv'
     ? [

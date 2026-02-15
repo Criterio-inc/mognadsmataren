@@ -109,6 +109,42 @@ export function QuestionCard({
             </div>
           </motion.button>
         ))}
+
+        {/* Separator */}
+        <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+
+        {/* Not applicable option */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => handleSelect(0)}
+          className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
+            currentValue === 0
+              ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20'
+              : 'border-gray-200 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-600'
+          }`}
+        >
+          <div className="flex items-center gap-4">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                currentValue === 0
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+              }`}
+            >
+              –
+            </div>
+            <span
+              className={`text-sm md:text-base ${
+                currentValue === 0
+                  ? 'text-amber-700 dark:text-amber-300 font-medium'
+                  : 'text-gray-700 dark:text-gray-300'
+              }`}
+            >
+              {locale === 'sv' ? 'Ej aktuellt' : 'Not applicable'}
+            </span>
+          </div>
+        </motion.button>
       </div>
 
       {/* Navigation buttons */}

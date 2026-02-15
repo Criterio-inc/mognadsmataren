@@ -178,6 +178,7 @@ export const translations = {
     rating3: { sv: 'Stämmer delvis', en: 'Neutral' },
     rating4: { sv: 'Stämmer till stor del', en: 'Somewhat agree' },
     rating5: { sv: 'Stämmer helt', en: 'Strongly agree' },
+    ratingNA: { sv: 'Ej aktuellt', en: 'Not applicable' },
   },
 } as const;
 

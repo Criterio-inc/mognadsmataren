@@ -397,6 +397,38 @@ export default function SurveyPage() {
                   </span>
                 </button>
               ))}
+
+              {/* Separator */}
+              <div className="border-t border-slate-200 dark:border-slate-700 my-1" />
+
+              {/* Not applicable option */}
+              <button
+                onClick={() => saveResponse(currentQuestion.id, 0)}
+                className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
+                  responses[currentQuestion.id] === 0
+                    ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-amber-300 dark:hover:border-amber-600'
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                    responses[currentQuestion.id] === 0
+                      ? 'bg-amber-500 text-white'
+                      : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                  }`}
+                >
+                  –
+                </div>
+                <span
+                  className={`text-left ${
+                    responses[currentQuestion.id] === 0
+                      ? 'text-amber-700 dark:text-amber-300 font-medium'
+                      : 'text-slate-600 dark:text-slate-300'
+                  }`}
+                >
+                  {t.ratingNA}
+                </span>
+              </button>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -424,7 +456,7 @@ export default function SurveyPage() {
           ) : (
             <button
               onClick={goNext}
-              disabled={!responses[currentQuestion?.id]}
+              disabled={responses[currentQuestion?.id] === undefined}
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {t.next}
