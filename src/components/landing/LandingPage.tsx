@@ -40,21 +40,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
     <div className="min-h-screen bg-background">
       {/* Hero section */}
       <div className="max-w-6xl mx-auto px-4 pt-4 pb-24">
-        {/* Orange icon logo at top */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center mb-12"
-        >
-          <Image
-            src="/digmognad-logo.png"
-            alt="Digitala Mognadsmätaren"
-            width={200}
-            height={200}
-            className="h-24 w-auto"
-          />
-        </motion.div>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

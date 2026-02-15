@@ -6,6 +6,7 @@ import { dimensions, type Dimension } from '@/lib/questions';
 interface DimensionBarsProps {
   scores: Record<Dimension, number>;
   locale: 'sv' | 'en';
+  notApplicableCounts?: Record<Dimension, number> | null;
 }
 
 const barColors = [
@@ -15,12 +16,15 @@ const barColors = [
   'from-violet-400 to-violet-600',
 ];
 
-export function DimensionBars({ scores, locale }: DimensionBarsProps) {
+export function DimensionBars({ scores, locale, notApplicableCounts }: DimensionBarsProps) {
   return (
     <div className="space-y-6">
       {dimensions.map((dim, index) => {
         const score = scores[dim.id] || 0;
         const percentage = (score / 5) * 100;
+        const naCount = notApplicableCounts?.[dim.id] || 0;
+        const totalQuestions = dim.questionIds.length;
+        const allNA = naCount === totalQuestions;
 
         return (
           <motion.div
@@ -40,38 +44,55 @@ export function DimensionBars({ scores, locale }: DimensionBarsProps) {
                 </p>
               </div>
               <div className="text-right">
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {score.toFixed(1)}
-                </span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">/5</span>
+                {allNA ? (
+                  <span className="text-lg font-semibold text-amber-600 dark:text-amber-400">
+                    {locale === 'sv' ? 'Ej aktuellt' : 'N/A'}
+                  </span>
+                ) : (
+                  <>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {score.toFixed(1)}
+                    </span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">/5</span>
+                  </>
+                )}
               </div>
             </div>
 
             {/* Bar */}
             <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <motion.div
-                className={`h-full bg-gradient-to-r ${barColors[index]} rounded-full`}
+                className={`h-full bg-gradient-to-r ${allNA ? 'from-amber-300 to-amber-400' : barColors[index]} rounded-full`}
                 initial={{ width: 0 }}
-                animate={{ width: `${percentage}%` }}
+                animate={{ width: allNA ? '0%' : `${percentage}%` }}
                 transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: 'easeOut' }}
               />
             </div>
 
-            {/* Scale markers */}
+            {/* Scale markers and N/A info */}
             <div className="flex justify-between mt-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <span
-                  key={n}
-                  className={`text-xs ${
-                    score >= n
-                      ? 'text-gray-600 dark:text-gray-400'
-                      : 'text-gray-300 dark:text-gray-600'
-                  }`}
-                >
-                  {n}
-                </span>
-              ))}
+              <div className="flex gap-0 flex-1 justify-between">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <span
+                    key={n}
+                    className={`text-xs ${
+                      score >= n
+                        ? 'text-gray-600 dark:text-gray-400'
+                        : 'text-gray-300 dark:text-gray-600'
+                    }`}
+                  >
+                    {n}
+                  </span>
+                ))}
+              </div>
             </div>
+            {naCount > 0 && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                {locale === 'sv'
+                  ? `${naCount} av ${totalQuestions} påståenden markerade som "Ej aktuellt"`
+                  : `${naCount} of ${totalQuestions} statements marked as "Not applicable"`}
+              </p>
+            )}
           </motion.div>
         );
       })}
